@@ -11,5 +11,8 @@ router.route('/')
     .patch(studentsController.updateStudent)
     .delete(studentsController.deleteStudent)
 
+router.route('/without-supervisor')
+    .get(studentsController.studentsWithoutSupervisor)
+
 
 module.exports = router

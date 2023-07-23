@@ -6,13 +6,24 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+
 import SearchIcon from "@mui/icons-material/Search";
+
+import UserProfilePopup from "../../components/Popup"; // Import the UserProfilePopup component
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+
+  const handleLogout = () => {
+    // Add your logout logic here
+    console.log("Logging out...");
+  };
+
+  const { user } = useContext(AuthContext);
+  const username = user?.data.firstname + " " + user?.data.lastname;
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -43,9 +54,8 @@ const Topbar = () => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        <IconButton>
-          <PersonOutlinedIcon />
-        </IconButton>
+        {/* Use the UserProfilePopup component here */}
+        <UserProfilePopup username={username} onLogout={handleLogout} />
       </Box>
     </Box>
   );

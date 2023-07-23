@@ -10,11 +10,15 @@ import {
   FormControl,
   InputLabel,
   Select,
+  useMediaQuery,
+  Grid,
 } from "@mui/material";
 
 const AddLecturer = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+
+  const isMobileScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const [formData, setFormData] = useState({
     email: "",
@@ -69,67 +73,86 @@ const AddLecturer = () => {
       sx={{ display: "flex", flexDirection: "column", margin: "20px" }}
     >
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
-      <TextField
-        name="email"
-        label="email"
-        value={formData.email}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="firstname"
-        label="First Name"
-        value={formData.firstname}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="lastname"
-        label="Last Name"
-        value={formData.lastname}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="contact"
-        label="Contact"
-        value={formData.contact}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="password"
-        label="Password"
-        value={formData.password}
-        onChange={handleFormChange}
-        margin="normal"
-        type="password"
-        required
-        variant="filled"
-      />
-      <FormControl sx={{ minWidth: 120 }} margin="normal" required>
-        <InputLabel>Department</InputLabel>
-        <Select
-          name="department"
-          value={formData.department}
-          onChange={handleFormChange}
-          variant="filled"
-        >
-          <MenuItem value="Information Technology">
-            Information Technology
-          </MenuItem>
-          <MenuItem value="Hospitality">Hospitality</MenuItem>
-          <MenuItem value="Accounting">Accounting</MenuItem>
-        </Select>
-      </FormControl>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="firstname"
+            label="First Name"
+            value={formData.firstname}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="lastname"
+            label="Last Name"
+            value={formData.lastname}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="email"
+            label="email"
+            value={formData.email}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="contact"
+            label="Contact"
+            value={formData.contact}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6} mt={2}>
+          <FormControl fullWidth required>
+            <InputLabel>Department</InputLabel>
+            <Select
+              name="department"
+              value={formData.department}
+              onChange={handleFormChange}
+              variant="filled"
+            >
+              <MenuItem value="Information Technology">
+                Information Technology
+              </MenuItem>
+              <MenuItem value="Hospitality">Hospitality</MenuItem>
+              <MenuItem value="Accounting">Accounting</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="password"
+            label="Password"
+            value={formData.password}
+            onChange={handleFormChange}
+            margin="normal"
+            type="password"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+      </Grid>
       <Box display="flex" justifyContent="end" m="20px">
         <Button
           onClick={handleSubmit}

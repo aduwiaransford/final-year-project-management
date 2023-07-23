@@ -10,6 +10,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Grid,
 } from "@mui/material";
 import "../../index.css";
 
@@ -104,69 +105,73 @@ const AddStudent = () => {
       sx={{ display: "flex", flexDirection: "column", margin: "20px" }}
     >
       <Header title="ADD STUDENT" subtitle="Add new stdudent data" />
-      <Box display="flex" justifyContent="flex-end" alignItems="center">
-        <label className="import-lable" htmlFor="file-upload">
-          Import Students
-        </label>
-        <input
-          type="file"
-          id="file-upload"
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-      </Box>
-      <TextField
-        name="index"
-        label="index number"
-        value={formData.index}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="firstname"
-        label="First Name"
-        value={formData.firstname}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="lastname"
-        label="Last Name"
-        value={formData.lastname}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-      <TextField
-        name="contact"
-        label="Contact"
-        value={formData.contact}
-        onChange={handleFormChange}
-        margin="normal"
-        required
-        variant="filled"
-      />
-
-      <FormControl sx={{ minWidth: 120 }} margin="normal" required>
-        <InputLabel>Department</InputLabel>
-        <Select
-          name="department"
-          value={formData.department}
-          onChange={handleFormChange}
-          variant="filled"
-        >
-          <MenuItem value="Information Technology">
-            Information Technology
-          </MenuItem>
-          <MenuItem value="Hospitality">Hospitality</MenuItem>
-          <MenuItem value="Accounting">Accounting</MenuItem>
-        </Select>
-      </FormControl>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="firstname"
+            label="First Name"
+            value={formData.firstname}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="lastname"
+            label="Last Name"
+            value={formData.lastname}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="index"
+            label="Index Number"
+            value={formData.index}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            name="contact"
+            label="Contact"
+            value={formData.contact}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth required>
+            <InputLabel>Department</InputLabel>
+            <Select
+              name="department"
+              value={formData.department}
+              onChange={handleFormChange}
+              variant="filled"
+            >
+              <MenuItem value="Information Technology">
+                Information Technology
+              </MenuItem>
+              <MenuItem value="Hospitality">Hospitality</MenuItem>
+              <MenuItem value="Accounting">Accounting</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       <Box display="flex" justifyContent="end" m="20px">
         <Button
           onClick={handleSubmit}

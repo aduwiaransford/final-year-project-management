@@ -46,7 +46,7 @@ const Assign = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await axios.get("/students");
+        const res = await axios.get("/students/without-supervisor");
         const studentsWithId = res.data.map((student) => ({
           ...student,
           id: student._id, // Add the id property using the _id field from the backend
@@ -124,7 +124,10 @@ const Assign = () => {
 
   return (
     <Box m="20px">
-      <Header title="STUDENTS" subtitle="List of all students" />
+      <Header
+        title="STUDENTS"
+        subtitle="List of students without supervisors"
+      />
       <Box display="flex" justifyContent="flex-end">
         <Autocomplete
           id="asynchronous-demo"

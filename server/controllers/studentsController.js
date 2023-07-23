@@ -106,6 +106,15 @@ const deleteStudent = asyncHandler(async (req, res) => {
     res.json({ message: `Student ${student.firstname} with index ${student.index} deleted` })
 })
 
+const studentsWithoutSupervisor = asyncHandler(async (req, res) => {
+    const studentsWithoutSupervisor = await Student.find({ supervisor: null }).lean().exec();
+    if (!studentsWithoutSupervisor?.length) {
+        return res.status(404).json({ message: 'No students without supervisor found' });
+    }
+    res.json(studentsWithoutSupervisor);
+});
+
+
 
 
 
@@ -115,5 +124,6 @@ module.exports = {
     createNewStudent,
     getAllStudents,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    studentsWithoutSupervisor
 }
