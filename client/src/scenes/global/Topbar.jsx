@@ -17,13 +17,14 @@ const Topbar = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
-  };
-
   const { user } = useContext(AuthContext);
   const username = user?.data.firstname + " " + user?.data.lastname;
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    console.log("Logging out...");
+    window.location.href = "/";
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>

@@ -11,8 +11,12 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import NotificationAlert from "../../components/NotificationAlert";
 
 const Assign = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(null);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -43,21 +47,21 @@ const Assign = () => {
 
   const [students, setStudents] = useState([]);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await axios.get("/students/without-supervisor");
-        const studentsWithId = res.data.map((student) => ({
-          ...student,
-          id: student._id, // Add the id property using the _id field from the backend
-        }));
-        setStudents(studentsWithId);
-      } catch (error) {
-        console.error("Error fetching student data:", error.response.data);
-        // Handle errors here (e.g., show error message to the user)
-      }
-    };
+  const fetchStudents = async () => {
+    try {
+      const res = await axios.get("/students/without-supervisor");
+      const studentsWithId = res.data.map((student) => ({
+        ...student,
+        id: student._id, // Add the id property using the _id field from the backend
+      }));
+      setStudents(studentsWithId);
+    } catch (error) {
+      console.error("Error fetching student data:", error.response.data);
+      // Handle errors here (e.g., show error message to the user)
+    }
+  };
 
+  useEffect(() => {
     fetchStudents();
   }, []);
 
@@ -112,14 +116,28 @@ const Assign = () => {
       });
 
       // Handle the success response here (e.g., show success message)
+      setShowSuccessAlert(res.data);
       console.log("Student assigned successfully:", res.data);
+
+      // Fetch the updated list of students without supervisors again
+      fetchStudents();
+
+      // Optionally, you can also clear the selected student and lecturer after a successful assignment
+      setSelectedStudentId(null);
+      setSelectedLecturerId(null);
 
       // Optionally, you can refresh the student list or update the student's supervisor field in the state.
       // You can do that by making another API call to get the updated student data or update the state directly.
     } catch (error) {
       // Handle the error response here (e.g., show error message)
+      setShowErrorAlert(error.response.data.message);
       console.error("Error assigning student:", error.response.data);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setShowSuccessAlert(null); // Clear the success message when the alert is closed
+    setShowErrorAlert(null); // Clear the error message when the alert is closed
   };
 
   return (
@@ -172,6 +190,21 @@ const Assign = () => {
         >
           Assign Student
         </Button>
+        {/* Success Alert */}
+        <NotificationAlert
+          open={showSuccessAlert !== null}
+          message={showSuccessAlert}
+          severity="success"
+          onClose={handleCloseAlert}
+        />
+
+        {/* Error Alert */}
+        <NotificationAlert
+          open={showErrorAlert !== null}
+          message={showErrorAlert}
+          severity="error"
+          onClose={handleCloseAlert}
+        />
       </Box>
       <Box
         m="40px 0 0 0"
