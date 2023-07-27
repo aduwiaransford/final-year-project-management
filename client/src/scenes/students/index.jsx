@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useContext } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import { StudentContext } from "../../context/studentApi/StudentContext";
 
 const Students = () => {
+  const { students } = useContext(StudentContext);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -33,26 +35,6 @@ const Students = () => {
       flex: 1,
     },
   ];
-
-  const [students, setStudents] = useState([]);
-
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const res = await axios.get("/students");
-        const studentsWithId = res.data.map((student) => ({
-          ...student,
-          id: student._id, // Add the id property using the _id field from the backend
-        }));
-        setStudents(studentsWithId);
-      } catch (error) {
-        console.error("Error fetching student data:", error.response.data);
-        // Handle errors here (e.g., show error message to the user)
-      }
-    };
-
-    fetchStudents();
-  }, []);
 
   return (
     <Box m="20px">

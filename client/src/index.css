@@ -41,8 +41,8 @@ body,
 }
 
 /* style for import button at import students page */
-.import-lable {
-  padding: 5px;
+.import-label {
+  padding: 10px;
   background-color: #4cceac;
   font-weight: bold;
   color: black;

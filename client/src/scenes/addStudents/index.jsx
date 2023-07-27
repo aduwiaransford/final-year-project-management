@@ -1,7 +1,7 @@
 import axios from "axios";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -13,10 +13,17 @@ import {
   Grid,
 } from "@mui/material";
 import "../../index.css";
+import { StudentContext } from "../../context/studentApi/StudentContext";
 
 const AddStudent = () => {
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const {
+    addStudent,
+    showSuccessAlert,
+    setShowSuccessAlert,
+    setShowErrorAlert,
+    showErrorAlert,
+    handleCloseAlert,
+  } = useContext(StudentContext);
 
   const [formData, setFormData] = useState({
     index: "",
@@ -31,40 +38,28 @@ const AddStudent = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    try {
-      const res = await axios.post("/students", formData, {
-        headers: {
-          // Include any headers you need for authentication (if applicable)
-        },
-      });
-      setShowSuccessAlert(true);
-      console.log(res.data); // The response from the server (e.g., success message)
-
-      // Reset the form fields after successful submission
-      setFormData({
-        index: "",
-        firstname: "",
-        lastname: "",
-        contact: "",
-        department: "",
-      });
-    } catch (error) {
-      // Handle errors here (e.g., show error message to the user)
-      setShowErrorAlert(true);
-      console.error("Error creating user:", error.response.data);
-    }
-  };
-
-  const handleCloseAlert = () => {
-    setShowSuccessAlert(false);
-    setShowErrorAlert(false);
+    addStudent(formData);
+    // Optionally, you can reset the form fields after successful submission
+    setFormData({
+      index: "",
+      firstname: "",
+      lastname: "",
+      contact: "",
+      department: "",
+    });
   };
 
   // File upload
   const [selectedFile, setSelectedFile] = useState(null);
+  const [errorAlert, setErrorAlert] = useState(null);
+  const [successAlert, setSuccessAlert] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
 
   useEffect(() => {
     const handleFileUpload = async () => {
@@ -84,9 +79,11 @@ const AddStudent = () => {
         });
         // Handle success response here (e.g., show success message)
         setShowSuccessAlert(true);
+        console.log(res.data);
       } catch (error) {
         // Handle error response here (e.g., show error message)
         setShowErrorAlert(true);
+        console.log(error.response.data);
       }
     };
 
@@ -95,16 +92,27 @@ const AddStudent = () => {
     }
   }, [selectedFile]);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
   return (
     <Box
       component="form"
       sx={{ display: "flex", flexDirection: "column", margin: "20px" }}
     >
-      <Header title="ADD STUDENT" subtitle="Add new stdudent data" />
+      <Box display="flex" justifyContent="space-between">
+        {" "}
+        {/* Update justifyContent */}
+        <Header title="ADD STUDENT" subtitle="Add new stdudent data" />
+        <Box>
+          <label htmlFor="file-upload" className="import-label">
+            Import Students
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+        </Box>
+      </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField

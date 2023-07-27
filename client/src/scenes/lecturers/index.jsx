@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import { LecturerContext } from "../../context/lecturerApi/LecturerApi";
 
 const Lecturers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { lecturers, fetchLecturers } = useContext(LecturerContext);
 
   const columns = [
     {
@@ -41,23 +44,7 @@ const Lecturers = () => {
     },
   ];
 
-  const [lecturers, setLecturers] = useState([]);
-
   useEffect(() => {
-    const fetchLecturers = async () => {
-      try {
-        const res = await axios.get("/users");
-        const lecturersWithId = res.data.map((lecture) => ({
-          ...lecture,
-          id: lecture._id, // Add the id property using the _id field from the backend
-        }));
-        setLecturers(lecturersWithId);
-      } catch (error) {
-        console.error("Error fetching lecturer data:", error.response.data);
-        // Handle errors here (e.g., show error message to the user)
-      }
-    };
-
     fetchLecturers();
   }, []);
 

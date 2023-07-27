@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   Box,
@@ -12,8 +12,15 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
+import { StudentContext } from "../../context/studentApi/StudentContext";
 
 const Assign = () => {
+  const { studentsWithout, fetchStudentsWithout } = useContext(StudentContext);
+
+  useEffect(() => {
+    fetchStudentsWithout();
+  }, []);
+
   const [showSuccessAlert, setShowSuccessAlert] = useState(null);
   const [showErrorAlert, setShowErrorAlert] = useState(null);
 
@@ -44,26 +51,6 @@ const Assign = () => {
       flex: 1,
     },
   ];
-
-  const [students, setStudents] = useState([]);
-
-  const fetchStudents = async () => {
-    try {
-      const res = await axios.get("/students/without-supervisor");
-      const studentsWithId = res.data.map((student) => ({
-        ...student,
-        id: student._id, // Add the id property using the _id field from the backend
-      }));
-      setStudents(studentsWithId);
-    } catch (error) {
-      console.error("Error fetching student data:", error.response.data);
-      // Handle errors here (e.g., show error message to the user)
-    }
-  };
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
 
   //AutoComplete lecturer names
   const [open, setOpen] = useState(false);
@@ -120,7 +107,7 @@ const Assign = () => {
       console.log("Student assigned successfully:", res.data);
 
       // Fetch the updated list of students without supervisors again
-      fetchStudents();
+      fetchStudentsWithout();
 
       // Optionally, you can also clear the selected student and lecturer after a successful assignment
       setSelectedStudentId(null);
@@ -240,10 +227,10 @@ const Assign = () => {
       >
         <DataGrid
           checkboxSelection
-          rows={students}
+          rows={studentsWithout}
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
-            const selectedRowData = students.find((row) =>
+            const selectedRowData = studentsWithout.find((row) =>
               selectedIDs.has(row.id.toString())
             );
             setSelectedStudentId(selectedRowData ? selectedRowData.id : null);
