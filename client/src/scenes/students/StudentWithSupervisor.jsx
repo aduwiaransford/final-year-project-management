@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
@@ -43,6 +44,25 @@ const StudentWithSupervisor = () => {
       headerName: "Department",
       flex: 1,
     },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link
+              to={{
+                pathname: "/students/" + params.row._id,
+                students: params.row,
+              }}
+            >
+              <button className="productListEdit">Edit</button>
+            </Link>
+          </>
+        );
+      },
+    },
   ];
 
   return (
@@ -81,7 +101,6 @@ const StudentWithSupervisor = () => {
         }}
       >
         <DataGrid
-          checkboxSelection
           rows={filteredStudents}
           columns={columns}
           components={{ Toolbar: GridToolbar }}

@@ -9,6 +9,7 @@ import Lecturers from './scenes/lecturers';
 import AddLecturer from './scenes/addLecturers';
 import AddStudent from './scenes/addStudents';
 import StudentWithSupervisor from './scenes/students/StudentWithSupervisor';
+import PersonalPage from './scenes/students/PersonalPage';
 
 import Layout from './scenes/Layout';
 
@@ -34,6 +35,7 @@ function App() {
 
         <Route element={<Layout />}>
           <Route path="/students-with-supervisor" element={<StudentWithSupervisor />} />
+          <Route path="/students/:id" element={<PersonalPage />} />
         </Route>
         <Route />
       </Routes>

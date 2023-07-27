@@ -53,8 +53,6 @@ const AddStudent = () => {
 
   // File upload
   const [selectedFile, setSelectedFile] = useState(null);
-  const [errorAlert, setErrorAlert] = useState(null);
-  const [successAlert, setSuccessAlert] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

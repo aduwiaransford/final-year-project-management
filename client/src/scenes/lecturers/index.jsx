@@ -84,6 +84,7 @@ const Lecturers = () => {
         }}
       >
         <DataGrid
+          checkboxSelection
           rows={lecturers}
           columns={columns}
           components={{ Toolbar: GridToolbar }}

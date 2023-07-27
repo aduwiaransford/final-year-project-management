@@ -1,12 +1,29 @@
-import { useEffect, useState, useContext } from "react";
-import { Box, useTheme } from "@mui/material";
+import { useState, useContext } from "react";
+import axios from "axios";
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 
 const Students = () => {
-  const { students } = useContext(StudentContext);
+  const { students, fetchStudents } = useContext(StudentContext);
+  const [selectedStudentId, setSelectedStudentId] = useState();
+  console.log(selectedStudentId);
+
+  // delete student
+  const handleDeleteStudent = async () => {
+    try {
+      const response = await axios.delete("/students", {
+        data: { id: selectedStudentId },
+      });
+      console.log(response.data.message); // Display success message from the backend
+      // You can perform additional actions, such as refreshing the list of students after deletion.
+    } catch (error) {
+      console.error(error.response.data.message); // Display error message from the backend
+    }
+    fetchStudents();
+  };
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -38,9 +55,21 @@ const Students = () => {
 
   return (
     <Box m="20px">
-      <Header title="STUDENTS" subtitle="List of all students" />
+      <Box display="flex" justifyContent="space-between">
+        <Header title="STUDENTS" subtitle="List of all students" />
+        <Box>
+          <Button
+            type="submit"
+            color="secondary"
+            variant="contained"
+            onClick={handleDeleteStudent}
+          >
+            Delete Student
+          </Button>
+        </Box>
+      </Box>
       <Box
-        m="40px 0 0 0"
+        m=" 0 0 0"
         height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -74,6 +103,13 @@ const Students = () => {
         <DataGrid
           checkboxSelection
           rows={students}
+          onSelectionModelChange={(ids) => {
+            const selectedIDs = new Set(ids);
+            const selectedRowData = students.find((row) =>
+              selectedIDs.has(row.id.toString())
+            );
+            setSelectedStudentId(selectedRowData ? selectedRowData.id : null);
+          }}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

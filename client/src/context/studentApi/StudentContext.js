@@ -35,17 +35,11 @@ export const StudentProvider = ({ children }) => {
             fetchStudents(); // Fetch updated students after successful addition
 
             // Reset the form fields after successful submission
-            formData({
-                index: "",
-                firstname: "",
-                lastname: "",
-                contact: "",
-                department: "",
-            });
+
         } catch (error) {
             // Handle errors here (e.g., show error message to the user)
             setShowErrorAlert(true);
-            console.error("Error creating user:", error.response.data);
+            console.error("Error creating user:", error);
         }
     };
 
@@ -103,6 +97,7 @@ export const StudentProvider = ({ children }) => {
         <StudentContext.Provider
             value={{
                 students,
+                fetchStudents,
                 addStudent,
                 uploadFile,
                 showSuccessAlert,
