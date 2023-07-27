@@ -8,6 +8,7 @@ import Students from './scenes/students';
 import Lecturers from './scenes/lecturers';
 import AddLecturer from './scenes/addLecturers';
 import AddStudent from './scenes/addStudents';
+import StudentWithSupervisor from './scenes/students/StudentWithSupervisor';
 
 import Layout from './scenes/Layout';
 
@@ -29,7 +30,10 @@ function App() {
           <Route path="/lecturers" element={<Lecturers />} />
           <Route path="/addlecturer" element={<AddLecturer />} />
           <Route path="/addstudent" element={<AddStudent />} />
+        </Route>
 
+        <Route element={<Layout />}>
+          <Route path="/students-with-supervisor" element={<StudentWithSupervisor />} />
         </Route>
         <Route />
       </Routes>
