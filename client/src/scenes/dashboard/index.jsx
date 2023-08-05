@@ -8,18 +8,21 @@ import Header from "../../components/Header";
 import StatBox from "../../components/StatBox";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { LecturerContext } from "../../context/lecturerApi/LecturerApi";
+import { ProjectContext } from "../../context/projectApi/ProjectContext";
 import { useContext, useEffect } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const { categories, fetchCategories } = useContext(ProjectContext);
   const { students, studentsWithout, fetchStudentsWithout } =
     useContext(StudentContext);
   const { lecturers, fetchLecturers } = useContext(LecturerContext);
   useEffect(() => {
     fetchStudentsWithout();
     fetchLecturers();
+    fetchCategories();
   }, []);
   return (
     <Box m="20px">
@@ -95,10 +98,8 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
+            title={categories.length}
+            subtitle="Project Categories"
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}

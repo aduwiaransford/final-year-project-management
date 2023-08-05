@@ -5,9 +5,6 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-
-import SearchIcon from "@mui/icons-material/Search";
-
 import UserProfilePopup from "../../components/Popup"; // Import the UserProfilePopup component
 import { AuthContext } from "../../context/authContext/AuthContext";
 

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -10,6 +10,11 @@ const Students = () => {
   const { students, fetchStudents } = useContext(StudentContext);
   const [selectedStudentId, setSelectedStudentId] = useState();
   console.log(selectedStudentId);
+
+  //fetch students
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   // delete student
   const handleDeleteStudent = async () => {

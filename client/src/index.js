@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./context/authContext/AuthContext";
 import { StudentProvider } from "./context/studentApi/StudentContext";
 import { LecturerProvider } from "./context/lecturerApi/LecturerApi";
+import { ProjectProvider } from "./context/projectApi/ProjectContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,9 @@ root.render(
       <AuthContextProvider>
         <StudentProvider>
           <LecturerProvider>
-            <App />
+            <ProjectProvider>
+              <App />
+            </ProjectProvider>
           </LecturerProvider>
         </StudentProvider>
       </AuthContextProvider>

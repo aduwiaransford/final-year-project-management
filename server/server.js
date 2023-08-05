@@ -22,6 +22,7 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/students', require('./routes/studentsRoute'))
 app.use('/login', require('./routes/authRoute'))
+app.use('/projects', require('./routes/projectRoute'))
 
 app.all('*', (req, res) => {
     res.status(404)

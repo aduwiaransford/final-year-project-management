@@ -10,6 +10,7 @@ import AddLecturer from './scenes/addLecturers';
 import AddStudent from './scenes/addStudents';
 import StudentWithSupervisor from './scenes/students/StudentWithSupervisor';
 import PersonalPage from './scenes/students/PersonalPage';
+import Categories from './scenes/projects/Categories';
 
 import Layout from './scenes/Layout';
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/lecturers" element={<Lecturers />} />
           <Route path="/addlecturer" element={<AddLecturer />} />
           <Route path="/addstudent" element={<AddStudent />} />
+          <Route path='/categories' element={<Categories />} />
         </Route>
 
         <Route element={<Layout />}>

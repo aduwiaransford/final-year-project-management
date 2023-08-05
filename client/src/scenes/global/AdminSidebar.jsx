@@ -9,6 +9,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import CategoryIcon from "@mui/icons-material/Category";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { AuthContext } from "../../context/authContext/AuthContext";
 
@@ -143,6 +144,21 @@ const Sidebar = () => {
               title="Create Lecturer"
               to="/addlecturer"
               icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Projects
+            </Typography>
+            <Item
+              title="Categories"
+              to="/categories"
+              icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />

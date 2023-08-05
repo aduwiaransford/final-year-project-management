@@ -18,8 +18,6 @@ const AddLecturer = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
 
-  const isMobileScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-
   const [formData, setFormData] = useState({
     email: "",
     firstname: "",
