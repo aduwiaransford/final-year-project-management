@@ -36,13 +36,13 @@ const Students = () => {
     { field: "index", headerName: "Index" },
     {
       field: "firstname",
-      headerName: "Firstname",
+      headerName: "FirstName",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
       field: "lastname",
-      headerName: "Lastname",
+      headerName: "LastName",
       flex: 1,
       cellClassName: "name-column--cell",
     },

@@ -1,19 +1,19 @@
-// LecturerContext.js
-import React, { createContext, useState, useEffect } from "react";
+// ProjectContext.js
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 export const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
-
     const [categories, setCategories] = useState([]);
+    const [chapters, setChapters] = useState([]);
 
     const fetchCategories = async () => {
         try {
             const res = await axios.get("/projects");
             const categoriesWithId = res.data.map((category) => ({
                 ...category,
-                id: category._id, // Add the id property using the _id field from the backend
+                id: category._id,
             }));
             setCategories(categoriesWithId);
         } catch (error) {
@@ -21,10 +21,6 @@ export const ProjectProvider = ({ children }) => {
             // Handle errors here (e.g., show error message to the user)
         }
     };
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
     const createCategory = async (name) => {
         try {
@@ -39,56 +35,44 @@ export const ProjectProvider = ({ children }) => {
             // Handle errors here (e.g., show error message to the user)
         }
     };
-    // chapters
-    const [chapters, setChapters] = useState([]);
 
-    const fetchChapters = async () => {
+    const fetchChaptersByStudentId = async (studentId) => {
         try {
-            const res = await axios.get("/chapters");
-            const chaptersWithId = res.data.map((chapter) => ({
-                ...chapter,
-                id: chapter._id,
-            }));
-            setChapters(chaptersWithId);
+            const res = await axios.get(`projects/chapters/${studentId}`);
+            setChapters(res.data);
         } catch (error) {
-            console.error("Error fetching chapter data:", error.response.data);
+            console.error("Error fetching chapters:", error.response.data);
             // Handle errors here (e.g., show error message to the user)
         }
     };
 
-    useEffect(() => {
-        fetchChapters();
-    }, []);
-
-    const addChapter = async (chapterData) => {
+    const createOrUpdateChapter = async (chapterData) => {
         try {
-            const res = await axios.post("/chapters", chapterData);
+            const res = await axios.post("/projects/chapters", chapterData);
             const newChapter = {
                 ...res.data,
                 id: res.data._id,
             };
-            setChapters((prevChapters) => [...prevChapters, newChapter]);
+            setChapters([...chapters, newChapter]);
         } catch (error) {
-            console.error("Error creating chapter:", error.response.data);
+            console.error("Error creating or updating chapter:", error.response.data);
             // Handle errors here (e.g., show error message to the user)
         }
     };
 
-    const updateChapter = async (chapterId, chapterData) => {
+    const [summaryReport, setSummaryReport] = useState(null);
+
+    // Function to fetch the summary report from the backend
+    const fetchSummaryReport = async (id) => {
         try {
-            await axios.put(`/chapters/${chapterId}`, chapterData);
-            setChapters((prevChapters) =>
-                prevChapters.map((chapter) =>
-                    chapter.id === chapterId ? { ...chapter, ...chapterData } : chapter
-                )
-            );
+            const res = await axios.get(`/projects/summary/${id}`);
+            setSummaryReport(res.data);
+            console.log(res.data);
         } catch (error) {
-            console.error("Error updating chapter:", error.response.data);
+            console.error("Error fetching summary report:", error.response.data);
             // Handle errors here (e.g., show error message to the user)
         }
     };
-
-
 
     return (
         <ProjectContext.Provider
@@ -96,9 +80,11 @@ export const ProjectProvider = ({ children }) => {
                 fetchCategories,
                 categories,
                 createCategory,
-                addChapter,
-                updateChapter
-
+                fetchChaptersByStudentId,
+                chapters,
+                createOrUpdateChapter,
+                fetchSummaryReport,
+                summaryReport
             }}
         >
             {children}

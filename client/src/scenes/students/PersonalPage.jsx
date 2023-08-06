@@ -7,7 +7,6 @@ import {
   FormControl,
   MenuItem,
   Select,
-  InputLabel,
 } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import { tokens } from "../../theme";
@@ -22,51 +21,76 @@ const PersonalPage = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // Access the ProjectContext
+  const {
+    createOrUpdateChapter,
+    fetchChaptersByStudentId,
+    chapters,
+    fetchSummaryReport,
+    summaryReport,
+  } = useContext(ProjectContext);
+  const [selectedChapter, setSelectedChapter] = useState("");
+  const [remarks, setRemarks] = useState("");
   // Find the student data corresponding to the extracted ID
   const student = students.find((student) => student._id === id);
 
-  // State to manage the current chapter and remarks
-  const [currentChapter, setCurrentChapter] = useState("chapter1");
-  const [remarks, setRemarks] = useState({
-    chapter1: "",
-    chapter2: "",
-    chapter3: "",
-    chapter4: "",
-    chapter5: "",
-  });
-
-  // Access the Project
-  const { addChapter, updateChapter } = useContext(ProjectContext);
-
-  // Update the remark for the current chapter
-  const handleRemarkChange = (value) => {
-    setRemarks((prevRemarks) => ({ ...prevRemarks, [currentChapter]: value }));
-  };
-
-  // Generate the summary report based on the remarks
-  const generateSummaryReport = () => {
-    // Create the summary report based on the remarks
-    const summaryReport = `
-      Summary Report for ${student.firstname} ${student.lastname}
-      Chapter 1: ${remarks.chapter1}
-      Chapter 2: ${remarks.chapter2}
-      Chapter 3: ${remarks.chapter3}
-      Chapter 4: ${remarks.chapter4}
-      Chapter 5: ${remarks.chapter5}
-    `;
-
-    // Display the summary report in an alert (you can customize how you want to display it)
-    alert(summaryReport);
-  };
-
-  // Function to save the remarks for the current chapter to the context
+  //save remarks
   const saveRemarks = () => {
+    // Validate if a student and chapter are selected
+    if (!selectedChapter) {
+      alert("Please select a student and a chapter");
+      return;
+    }
+
+    // Submit the remarks to the backend
     const chapterData = {
-      id: currentChapter,
-      remarks: remarks[currentChapter],
+      id: id,
+      remarks: { ...remarks, [selectedChapter]: remarks[selectedChapter] },
+      chapters: Object.keys(remarks), // Pass the chapter numbers as an array to the backend
     };
 
-    updateChapter(currentChapter, chapterData);
+    createOrUpdateChapter(chapterData);
+    console.log(chapterData);
+
+    // ... (Add logic to handle API response or redirect to a different page)
+  };
+
+  //fetch chapters remarks
+  useEffect(() => {
+    if (student) {
+      fetchSummaryReport(id);
+    }
+  }, [student, id]);
+
+  // Function to display the summary report
+  const generateSummaryReport = () => {
+    // Check if the summary report is available
+    if (summaryReport) {
+      // Sort the summaryReport array by chapter numbers
+      const sortedSummaryReport = summaryReport.sort((a, b) => {
+        const chapterNumberA = parseInt(
+          a.chapterNumbers[0].replace("chapter", "")
+        );
+        const chapterNumberB = parseInt(
+          b.chapterNumbers[0].replace("chapter", "")
+        );
+        return chapterNumberA - chapterNumberB;
+      });
+
+      // Map over the sortedSummaryReport array to create JSX elements for each chapter
+      const summaryItems = sortedSummaryReport.map((item) => (
+        <div key={item._id}>
+          <h3>Chapter {item.chapterNumbers[0]}</h3>
+          <p>{item.remarks}</p>
+        </div>
+      ));
+
+      // Display the summary report on the UI
+      return <div>{summaryItems}</div>;
+    } else {
+      // If summaryReport is not available yet, show a message
+      return <p>Summary report is not available yet.</p>;
+    }
   };
 
   return (
@@ -90,9 +114,13 @@ const PersonalPage = () => {
           </Box>
           <FormControl fullWidth sx={{ mb: 2 }}>
             <Select
-              value={currentChapter}
-              onChange={(e) => setCurrentChapter(e.target.value)}
+              value={selectedChapter}
+              onChange={(e) => setSelectedChapter(e.target.value)}
+              displayEmpty // This will display an empty option as a placeholder
             >
+              <MenuItem value="" disabled>
+                Select a chapter
+              </MenuItem>
               <MenuItem value="chapter1">Chapter 1</MenuItem>
               <MenuItem value="chapter2">Chapter 2</MenuItem>
               <MenuItem value="chapter3">Chapter 3</MenuItem>
@@ -101,14 +129,17 @@ const PersonalPage = () => {
             </Select>
           </FormControl>
           <TextField
-            label={`Remarks - ${currentChapter}`}
+            label={`Remarks - ${selectedChapter}`}
             multiline
             rows={8}
-            value={remarks[currentChapter]}
-            onChange={(e) => handleRemarkChange(e.target.value)}
+            value={remarks[selectedChapter] || ""} // Use the selected chapter's remarks or an empty string
+            onChange={(e) =>
+              setRemarks({ ...remarks, [selectedChapter]: e.target.value })
+            } // Update the specific chapter's remarks
             variant="filled"
             sx={{ width: "100%", mb: 2 }}
           />
+
           <Box display="flex" justifyContent="end">
             <Box m="0 10px 0 0">
               <Button
@@ -126,11 +157,13 @@ const PersonalPage = () => {
                 color="secondary"
                 variant="contained"
                 onClick={saveRemarks}
+                disabled={!selectedChapter}
               >
                 Submit
               </Button>
             </Box>
           </Box>
+          {generateSummaryReport()}
         </Box>
       ) : (
         <p>Student not found</p>
