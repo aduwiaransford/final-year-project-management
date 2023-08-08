@@ -11,6 +11,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import SummaryDialog from "../../components/SummaryDialog";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
 
@@ -62,6 +63,9 @@ const PersonalPage = () => {
     }
   }, [student, id]);
 
+  const [summaryOpen, setSummaryOpen] = useState(false);
+  const [summaryText, setSummaryText] = useState("");
+
   // Function to display the summary report
   const generateSummaryReport = () => {
     // Check if the summary report is available
@@ -86,10 +90,12 @@ const PersonalPage = () => {
       ));
 
       // Display the summary report on the UI
-      return <div>{summaryItems}</div>;
+      setSummaryText(summaryItems);
+      setSummaryOpen(true);
     } else {
       // If summaryReport is not available yet, show a message
-      return <p>Summary report is not available yet.</p>;
+      setSummaryText("Summary report is not available yet.");
+      setSummaryOpen(true);
     }
   };
 
@@ -157,13 +163,18 @@ const PersonalPage = () => {
                 color="secondary"
                 variant="contained"
                 onClick={saveRemarks}
-                disabled={!selectedChapter}
+                disabled={!selectedChapter || !remarks[selectedChapter]}
               >
                 Submit
               </Button>
             </Box>
           </Box>
-          {generateSummaryReport()}
+          <SummaryDialog
+            open={summaryOpen}
+            handleClose={() => setSummaryOpen(false)}
+          >
+            {summaryText}
+          </SummaryDialog>
         </Box>
       ) : (
         <p>Student not found</p>
