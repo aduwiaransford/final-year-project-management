@@ -87,38 +87,35 @@ const Assign = () => {
   };
 
   // Assign students to supervisor
-  const [selectedStudentId, setSelectedStudentId] = useState();
+  const [selectedStudentIds, setSelectedStudentIds] = useState([]);
 
-  const handleAssignStudent = async () => {
+  const handleAssignStudents = async () => {
     if (!selectedLecturerId) {
       alert("Please select a lecturer to assign.");
       return;
     }
 
     try {
-      // Make the API call to assign the student to the lecturer
-      const res = await axios.post(`/users/assign`, {
-        studentId: selectedStudentId,
-        supervisorId: selectedLecturerId,
-      });
+      for (const studentId of selectedStudentIds) {
+        // Make the API call to assign the student to the lecturer
+        const res = await axios.post(`/users/assign`, {
+          studentId,
+          supervisorId: selectedLecturerId,
+        });
 
-      // Handle the success response here (e.g., show success message)
-      setShowSuccessAlert(res.data);
-      console.log("Student assigned successfully:", res.data);
+        // Handle the success response here (e.g., show success message for each student)
+        console.log("Student assigned successfully:", res.data);
+      }
 
       // Fetch the updated list of students without supervisors again
       fetchStudentsWithout();
 
-      // Optionally, you can also clear the selected student and lecturer after a successful assignment
-      setSelectedStudentId(null);
+      // Clear the selected students and lecturer
+      setSelectedStudentIds([]);
       setSelectedLecturerId(null);
-
-      // Optionally, you can refresh the student list or update the student's supervisor field in the state.
-      // You can do that by making another API call to get the updated student data or update the state directly.
     } catch (error) {
       // Handle the error response here (e.g., show error message)
-      setShowErrorAlert(error.response.data.message);
-      console.error("Error assigning student:", error.response.data);
+      console.error("Error assigning students:", error.response.data);
     }
   };
 
@@ -173,10 +170,11 @@ const Assign = () => {
           type="submit"
           color="secondary"
           variant="contained"
-          onClick={handleAssignStudent}
+          onClick={handleAssignStudents}
         >
-          Assign Student
+          Assign Students
         </Button>
+
         {/* Success Alert */}
         <NotificationAlert
           open={showSuccessAlert !== null}
@@ -228,13 +226,8 @@ const Assign = () => {
         <DataGrid
           checkboxSelection
           rows={studentsWithout}
-          onSelectionModelChange={(ids) => {
-            const selectedIDs = new Set(ids);
-            const selectedRowData = studentsWithout.find((row) =>
-              selectedIDs.has(row.id.toString())
-            );
-            setSelectedStudentId(selectedRowData ? selectedRowData.id : null);
-          }}
+          selectionModel={selectedStudentIds}
+          onSelectionModelChange={(ids) => setSelectedStudentIds(ids)}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
