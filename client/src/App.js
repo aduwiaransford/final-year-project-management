@@ -11,7 +11,7 @@ import AddStudent from './scenes/addStudents';
 import StudentWithSupervisor from './scenes/students/StudentWithSupervisor';
 import PersonalPage from './scenes/students/PersonalPage';
 import Categories from './scenes/projects/Categories';
-
+import SupervisorDashboard from './scenes/dashboard/SupervisorDashboard';
 import Layout from './scenes/Layout';
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
         </Route>
 
         <Route element={<Layout />}>
+          <Route path="/supervisor-dashboard" element={<SupervisorDashboard />} />
           <Route path="/students-with-supervisor" element={<StudentWithSupervisor />} />
           <Route path="/students/:id" element={<PersonalPage />} />
         </Route>
