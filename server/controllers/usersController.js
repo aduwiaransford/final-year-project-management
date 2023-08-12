@@ -116,6 +116,27 @@ const assignStudent = asyncHandler(async (req, res) => {
     }
 });
 
+//change user password
+const changePassword = asyncHandler(async (req, res) => {
+    const { userId, currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(userId).exec();
+    if (!user) {
+        return res.status(400).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid current password" });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+});
+
 
 module.exports = {
     getAllUsers,
@@ -123,4 +144,5 @@ module.exports = {
     updateUser,
     deleteUser,
     assignStudent,
+    changePassword
 };

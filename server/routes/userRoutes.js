@@ -14,4 +14,7 @@ router.route('/')
 router.route('/assign')
     .post(usersController.assignStudent)
 
+router.route('/changepassword')
+    .post(usersController.changePassword)
+
 module.exports = router
