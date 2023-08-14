@@ -3,6 +3,8 @@ const router = express.Router();
 const asyncHandler = require("express-async-handler");
 const Category = require("../models/Category");
 const Chapter = require('../models/Chapter')
+const ProjectTitle = require('../models/Project');
+const Student = require("../models/Student");
 
 // Create a new category
 const createCategory = asyncHandler(async (req, res) => {
@@ -104,6 +106,40 @@ const getSummaryByStudentId = asyncHandler(async (req, res) => {
     }
 });
 
+// add project title
+const addProjectTitle = asyncHandler(async (req, res) => {
+    try {
+        const { id, projectTitle, projectCategory } = req.body;
+
+        let student = await Student.findOne({ _id: id }); // Use findOne instead of find
+        console.log(student);
+        if (!student) {
+            return res.status(404).json({ message: "Student not found" }); // Return the response and exit the function
+        }
+
+        student.projectTitle = projectTitle;
+        student.projectCategory = projectCategory;
+
+        await student.save(); // Use save on the retrieved document
+        res.json(student);
+    } catch (error) {
+        res.status(500).json({ message: "Error adding project title", error: error.message });
+    }
+});
+
+
+
+
+//get student project title 
+const getProjectTitle = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+    try {
+        const title = await ProjectTitle.findOne({ studentId: id });
+        res.json(title);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching project title", error: err });
+    }
+});
 
 
 module.exports = {
@@ -111,5 +147,7 @@ module.exports = {
     getAllCategories,
     createOrUpdateChapter,
     getChaptersByStudentId,
-    getSummaryByStudentId
+    getSummaryByStudentId,
+    addProjectTitle,
+    getProjectTitle
 }

@@ -15,6 +15,9 @@ const chapterSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    projectTitle: {
+        type: String,
+    }
 }, {
     timestamps: true,
 });

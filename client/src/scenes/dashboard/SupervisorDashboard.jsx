@@ -8,10 +8,13 @@ import StatBox from "../../components/StatBox";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
 import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const SupervisorDashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { user } = useContext(AuthContext);
 
   const { categories, fetchCategories } = useContext(ProjectContext);
   const { students, studentsWithout, fetchStudentsWithout } =
@@ -20,6 +23,13 @@ const SupervisorDashboard = () => {
     fetchStudentsWithout();
     fetchCategories();
   }, []);
+
+  const loggedUserId = user.data.id;
+  console.log(loggedUserId);
+
+  const filteredStudents = students.filter((student) => {
+    return student.supervisor === loggedUserId;
+  });
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -46,7 +56,7 @@ const SupervisorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={students.length}
+            title={filteredStudents.length}
             subtitle="Total Students"
             icon={
               <SchoolIcon

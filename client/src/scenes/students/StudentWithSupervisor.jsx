@@ -6,17 +6,30 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { AuthContext } from "../../context/authContext/AuthContext";
+import EditStudentDialog from "../../components/EditStudentDialog";
 
 const StudentWithSupervisor = () => {
   const { students } = useContext(StudentContext);
   const { user } = useContext(AuthContext);
 
   const loggedUserId = user.data.id;
-  console.log(loggedUserId);
-
   const filteredStudents = students.filter((student) => {
     return student.supervisor === loggedUserId;
   });
+
+  //edit dialog
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const handleEditDialogOpen = (student) => {
+    setSelectedStudent(student);
+    setEditDialogOpen(true);
+  };
+
+  const handleEditDialogClose = () => {
+    setSelectedStudent(null);
+    setEditDialogOpen(false);
+  };
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -50,16 +63,12 @@ const StudentWithSupervisor = () => {
       width: 150,
       renderCell: (params) => {
         return (
-          <>
-            <Link
-              to={{
-                pathname: "/students/" + params.row._id,
-                students: params.row,
-              }}
-            >
-              <button className="productListEdit">Edit</button>
-            </Link>
-          </>
+          <button
+            className="productListEdit"
+            onClick={() => handleEditDialogOpen(params.row)}
+          >
+            Edit
+          </button>
         );
       },
     },
@@ -106,6 +115,11 @@ const StudentWithSupervisor = () => {
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
+      <EditStudentDialog
+        open={editDialogOpen}
+        handleClose={handleEditDialogClose}
+        student={selectedStudent}
+      />
     </Box>
   );
 };

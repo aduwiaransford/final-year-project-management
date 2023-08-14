@@ -30,6 +30,14 @@ const studentSchema = new mongoose.Schema({
         default: null,
         // required: true,
     },
+    projectTitle: {
+        type: String,
+        default: "",
+    },
+    projectCategory: {
+        type: String,
+        default: "",
+    }
 },
     {
         timestamps: true

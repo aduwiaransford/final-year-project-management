@@ -74,6 +74,39 @@ export const ProjectProvider = ({ children }) => {
         }
     };
 
+    // add project title
+    const addProjectTitle = async (id, projectTitle, projectCategory) => {
+        try {
+            const response = await axios.post('/projects/project-title', {
+                id: id,
+                projectTitle: projectTitle,
+                projectCategory: projectCategory
+            });
+
+            console.log(response.data); // Successfully added project title
+        } catch (error) {
+            console.error('Error adding project title:', error);
+        }
+    }
+
+    // Function to fetch project title
+    const fetchProjectTitle = async (id) => {
+        try {
+            const response = await axios.post('/projects/project-title', {
+                id: id,
+            });
+
+            if (response.data) {
+                console.log('Project Title:', response.data.projectTitle);
+            } else {
+                console.log('Project title not found for the student.');
+            }
+        } catch (error) {
+            console.error('Error fetching project title:', error);
+        }
+    };
+
+
     return (
         <ProjectContext.Provider
             value={{
@@ -84,7 +117,9 @@ export const ProjectProvider = ({ children }) => {
                 chapters,
                 createOrUpdateChapter,
                 fetchSummaryReport,
-                summaryReport
+                summaryReport,
+                addProjectTitle,
+                fetchProjectTitle
             }}
         >
             {children}

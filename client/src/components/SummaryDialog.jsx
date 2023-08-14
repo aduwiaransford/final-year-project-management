@@ -11,7 +11,7 @@ const SummaryDialog = ({ open, handleClose, children }) => {
       <DialogTitle>Summary Report</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="secondary">
           Close
         </Button>
       </DialogActions>

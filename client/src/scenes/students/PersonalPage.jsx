@@ -36,10 +36,10 @@ const PersonalPage = () => {
   const student = students.find((student) => student._id === id);
 
   //save remarks
-  const saveRemarks = () => {
+  const saveRemarks = async () => {
     // Validate if a student and chapter are selected
     if (!selectedChapter) {
-      alert("Please select a student and a chapter");
+      alert("Please select a chapter");
       return;
     }
 
@@ -50,10 +50,11 @@ const PersonalPage = () => {
       chapters: Object.keys(remarks), // Pass the chapter numbers as an array to the backend
     };
 
-    createOrUpdateChapter(chapterData);
+    await createOrUpdateChapter(chapterData);
     console.log(chapterData);
 
-    // ... (Add logic to handle API response or redirect to a different page)
+    // Reload the page
+    window.location.reload();
   };
 
   //fetch chapters remarks
@@ -114,8 +115,8 @@ const PersonalPage = () => {
               <p>Department: {student.department}</p>
             </Box>
             <Box mr="50px">
-              <p>Project Topic:</p>
-              <p>Project Category:</p>
+              <p>Project Topic: {student.projectTitle}</p>
+              <p>Project Category: {student.projectCategory}</p>
             </Box>
           </Box>
           <FormControl fullWidth sx={{ mb: 2 }}>

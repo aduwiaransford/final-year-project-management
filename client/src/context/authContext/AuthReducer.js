@@ -10,8 +10,7 @@ const AuthReducer = (state, action) => {
       return {
         ...state,
         user: {
-          ...action.payload,
-          isAdmin: action.payload.isAdmin, // Make sure this property is set correctly
+          ...action.payload
         },
         isFetching: false,
         error: false,

@@ -20,27 +20,17 @@ export default function SignIn() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const userData = await login({ email, password }, dispatch); // Await here
-      console.log("User Data after login:", userData); // Log the response data
+      const userData = await login({ email, password }, dispatch);
 
-      //   if (userData && userData.isAdmin) {
-      //     console.log("Navigating to dashboard");
-      //     navigate("/dashboard");
-      //   } else {
-      //     console.log("Navigating to supervisor-dashboard");
-      //     navigate("/supervisor-dashboard");
-      //   }
-      // } catch (error) {
-      //   console.error("Login failed", error);
-
-      console.log("Navigating to dashboard");
-      navigate("/dashboard");
+      if (userData && userData.data.isAdmin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/supervisor-dashboard");
+      }
     } catch (error) {
       console.error("Login failed", error);
     }
   };
-
-  console.log("User State in SignIn Component:", user);
 
   return (
     <Container component="main" maxWidth="sm">
