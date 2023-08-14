@@ -16,11 +16,16 @@ import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
 
 const PersonalPage = () => {
-  const { students } = useContext(StudentContext);
+  const { students, fetchStudents } = useContext(StudentContext);
   const { id } = useParams(); // Extract the student ID from the URL
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  //fetch student
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   // Access the ProjectContext
   const {

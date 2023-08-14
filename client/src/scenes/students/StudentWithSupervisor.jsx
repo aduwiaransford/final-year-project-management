@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
@@ -21,9 +21,17 @@ const StudentWithSupervisor = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
+  // Handler to open the edit dialog
+
+  const navigate = useNavigate();
   const handleEditDialogOpen = (student) => {
-    setSelectedStudent(student);
-    setEditDialogOpen(true);
+    if (!student.projectTitle) {
+      setSelectedStudent(student);
+      setEditDialogOpen(true);
+    } else {
+      // Redirect to personal page when project title exists
+      navigate(`/students/${student._id}`);
+    }
   };
 
   const handleEditDialogClose = () => {
@@ -115,11 +123,13 @@ const StudentWithSupervisor = () => {
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
-      <EditStudentDialog
-        open={editDialogOpen}
-        handleClose={handleEditDialogClose}
-        student={selectedStudent}
-      />
+      {editDialogOpen && selectedStudent && (
+        <EditStudentDialog
+          open={editDialogOpen}
+          handleClose={handleEditDialogClose}
+          student={selectedStudent}
+        />
+      )}
     </Box>
   );
 };
