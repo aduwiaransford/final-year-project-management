@@ -13,6 +13,7 @@ router.route('/')
 
 router.route('/without-supervisor')
     .get(studentsController.studentsWithoutSupervisor)
-
+router.route('/send-mail')
+    .post(studentsController.sendMail)
 
 module.exports = router

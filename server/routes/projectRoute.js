@@ -13,6 +13,5 @@ router.route("/summary/:studentId")
 
 router.route("/project-title")
     .post(projectsController.addProjectTitle)
-    .get(projectsController.getProjectTitle)
 
 module.exports = router

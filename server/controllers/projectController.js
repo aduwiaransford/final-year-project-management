@@ -128,20 +128,6 @@ const addProjectTitle = asyncHandler(async (req, res) => {
 });
 
 
-
-
-//get student project title 
-const getProjectTitle = asyncHandler(async (req, res) => {
-    const { id } = req.body;
-    try {
-        const title = await ProjectTitle.findOne({ studentId: id });
-        res.json(title);
-    } catch (err) {
-        res.status(500).json({ message: "Error fetching project title", error: err });
-    }
-});
-
-
 module.exports = {
     createCategory,
     getAllCategories,
@@ -149,5 +135,4 @@ module.exports = {
     getChaptersByStudentId,
     getSummaryByStudentId,
     addProjectTitle,
-    getProjectTitle
 }

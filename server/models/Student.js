@@ -4,16 +4,20 @@ const studentSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: true,
-        unique: true
+
     },
     lastname: {
         type: String,
         required: true,
-        unique: true
+
     },
     department: {
         type: String,
         required: true,
+        unique: true
+    },
+    email: {
+        type: String,
         unique: true
     },
     index: {

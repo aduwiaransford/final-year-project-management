@@ -14,6 +14,8 @@ import Header from "../../components/Header";
 import SummaryDialog from "../../components/SummaryDialog";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
+import { AuthContext } from "../../context/authContext/AuthContext";
+import axios from "axios";
 
 const PersonalPage = () => {
   const { students, fetchStudents } = useContext(StudentContext);
@@ -21,6 +23,8 @@ const PersonalPage = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { user } = useContext(AuthContext);
 
   //fetch student
   useEffect(() => {
@@ -104,6 +108,33 @@ const PersonalPage = () => {
       setSummaryOpen(true);
     }
   };
+  // send email
+  const sendMail = async () => {
+    try {
+      // Fetch the supervisor's name based on the logged-in user's ID
+
+      // Convert the summaryReport array into a formatted string
+      const formattedSummary = summaryReport
+        .map((item) => {
+          return `Chapter ${item.chapterNumbers[0]}:\n${item.remarks}\n\n`;
+        })
+        .join("\n");
+
+      // Create the email content with supervisor's name
+      const emailContent = `Dear ${student.firstname},\n\nHere is the project report summary from your supervisor ${user.data.firstname}:\n\n${formattedSummary}`;
+
+      const res = await axios.post("/students/send-mail", {
+        studentId: id,
+        subject: "Project Report",
+        chapterSummary: emailContent, // Pass the formatted email content
+      });
+
+      console.log("email successfully sent", res);
+    } catch (err) {
+      console.log("error sending email", err);
+    }
+    setSummaryOpen(false);
+  };
 
   return (
     <Box m="0 20px">
@@ -178,6 +209,7 @@ const PersonalPage = () => {
           <SummaryDialog
             open={summaryOpen}
             handleClose={() => setSummaryOpen(false)}
+            sendEmail={sendMail}
           >
             {summaryText}
           </SummaryDialog>

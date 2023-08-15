@@ -37,7 +37,7 @@ const uploadStudents = asyncHandler(async (req, res) => {
 
 
 const createNewStudent = asyncHandler(async (req, res) => {
-    const { firstname, lastname, index, contact, department } = req.body
+    const { firstname, lastname, index, contact, department, email } = req.body
     if (!firstname || !lastname || !index || !contact || !department) {
         return res.status(400).json({ message: 'All fields are required' })
     }
@@ -47,7 +47,7 @@ const createNewStudent = asyncHandler(async (req, res) => {
         return res.status(409).json({ message: 'Duplicate index Number' })
     }
 
-    const student = await Student.create({ firstname, lastname, index, contact, department })
+    const student = await Student.create({ firstname, lastname, index, contact, department, email })
     if (student) {
         res.status(201).json({ message: `New student ${firstname} created` })
     } else {
@@ -116,6 +116,36 @@ const studentsWithoutSupervisor = asyncHandler(async (req, res) => {
 
 
 
+// send email to student
+
+const sendEmail = require('../middleware/sendEmail'); // Import the function you created
+
+const sendMail = asyncHandler(async (req, res) => {
+    const { studentId, subject, chapterSummary } = req.body;
+
+    try {
+
+        // Fetch the student's email from the database using the studentId
+        const student = await Student.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        if (!student.email) {
+            return res.status(404).json({ message: 'Student email not found' });
+        }
+
+
+        // Send the email using the sendEmail function
+        sendEmail(student.email, subject, chapterSummary);
+
+        res.json({ message: `Summary email sent successfully ${student.email} ` });
+    } catch (error) {
+        res.status(500).json({ message: 'Error sending email', error: error.message });
+    }
+});
+
+
 
 
 
@@ -125,5 +155,6 @@ module.exports = {
     getAllStudents,
     updateStudent,
     deleteStudent,
-    studentsWithoutSupervisor
+    studentsWithoutSupervisor,
+    sendMail
 }

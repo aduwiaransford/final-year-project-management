@@ -30,6 +30,12 @@ const SupervisorDashboard = () => {
   const filteredStudents = students.filter((student) => {
     return student.supervisor === loggedUserId;
   });
+
+  //total projects
+  const totalProjects = filteredStudents.filter(
+    (student) => student.projectTitle
+  ).length;
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -73,8 +79,8 @@ const SupervisorDashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={studentsWithout.length}
-            subtitle="Unassigned Students"
+            title={totalProjects}
+            subtitle="Total Projects"
             icon={
               <PointOfSaleIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "40px" }}
