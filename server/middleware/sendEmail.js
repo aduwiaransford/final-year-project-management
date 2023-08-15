@@ -1,19 +1,5 @@
 const nodemailer = require('nodemailer');
-//const smtpTransport = require('nodemailer-smtp-transport'); // Only if using SMTP transport
-
-// Create a transporter using SMTP transport (example)
-// const transporter = nodemailer.createTransport(
-//     smtpTransport({
-//         host: 'smtp.gmail.com',
-//         port: 465,
-//         auth: {
-//             user: 'aamustedSupervisors@gmail.com',
-//             pass: 'aamusted123',
-//         },
-//     })
-// );
-
-
+require('dotenv').config();
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     secure: true,
