@@ -64,10 +64,12 @@ const Assign = () => {
     const fetchLecturers = async () => {
       try {
         const res = await axios.get("/users");
-        const lecturersWithId = res.data.map((lecture) => ({
-          ...lecture,
-          id: lecture._id, // Add the id property using the _id field from the backend
-        }));
+        const lecturersWithId = res.data
+          .filter((lecture) => !lecture.isAdmin) // Filter out lecturers with isAdmin === true
+          .map((lecture) => ({
+            ...lecture,
+            id: lecture._id, // Add the id property using the _id field from the backend
+          }));
         setLecturers(lecturersWithId);
       } catch (error) {
         console.error("Error fetching lecturer data:", error.response.data);

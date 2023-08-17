@@ -94,17 +94,25 @@ const updateStudent = asyncHandler(async (req, res) => {
 })
 
 const deleteStudent = asyncHandler(async (req, res) => {
-    const { id } = req.body
-    if (!id) {
-        return res.status(400).json({ message: 'All fields required' })
+    const { ids } = req.body; // Array of student IDs
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).json({ message: 'Invalid student IDs provided' });
     }
-    const student = await Student.findById(id).exec()
-    if (!student) {
-        return res.status(400).json({ message: 'Student not found' })
+
+    const deletedStudentIds = [];
+
+    for (const id of ids) {
+        const student = await Student.findById(id).exec();
+        if (!student) {
+            continue; // Skip this iteration and continue with the next ID
+        }
+
+        await Student.deleteOne({ _id: id });
+        deletedStudentIds.push(id);
     }
-    await Student.deleteOne({ _id: id })
-    res.json({ message: `Student ${student.firstname} with index ${student.index} deleted` })
-})
+
+    res.json({ message: 'Students deleted successfully', deletedStudentIds });
+});
 
 const studentsWithoutSupervisor = asyncHandler(async (req, res) => {
     const studentsWithoutSupervisor = await Student.find({ supervisor: null }).lean().exec();

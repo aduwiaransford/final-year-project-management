@@ -6,8 +6,6 @@ export const LecturerContext = createContext();
 
 export const LecturerProvider = ({ children }) => {
     const [lecturers, setLecturers] = useState([]);
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
 
     const fetchLecturers = async () => {
         try {
@@ -23,12 +21,27 @@ export const LecturerProvider = ({ children }) => {
         }
     };
 
+    //delete lecturers
+    const deleteMultipleLecturers = async (lecIDs) => {
+        try {
+            const response = await axios.delete('/users', {
+                data: { ids: lecIDs },
+            });
+
+            // You can return the response to the component if needed
+            return response.data;
+        } catch (error) {
+            // Handle errors here (e.g., show an error message)
+            throw error;
+        }
+    };
 
     return (
         <LecturerContext.Provider
             value={{
                 lecturers,
-                fetchLecturers
+                fetchLecturers,
+                deleteMultipleLecturers,
             }}
         >
             {children}

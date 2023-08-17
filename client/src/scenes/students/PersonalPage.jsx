@@ -16,6 +16,7 @@ import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import axios from "axios";
+import NotificationAlert from "../../components/NotificationAlert";
 
 const PersonalPage = () => {
   const { students, fetchStudents } = useContext(StudentContext);
@@ -25,6 +26,14 @@ const PersonalPage = () => {
   const colors = tokens(theme.palette.mode);
 
   const { user } = useContext(AuthContext);
+
+  const [showSuccessAlert, setShowSuccessAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(null);
+
+  const handleCloseAlert = () => {
+    setShowSuccessAlert(null); // Clear the success message when the alert is closed
+    setShowErrorAlert(null); // Clear the error message when the alert is closed
+  };
 
   //fetch student
   useEffect(() => {
@@ -130,7 +139,9 @@ const PersonalPage = () => {
       });
 
       console.log("email successfully sent", res);
+      setShowSuccessAlert("Mail sent successfully");
     } catch (err) {
+      setShowErrorAlert("Error sending email");
       console.log("error sending email", err);
     }
     setSummaryOpen(false);
@@ -213,6 +224,20 @@ const PersonalPage = () => {
           >
             {summaryText}
           </SummaryDialog>
+          <NotificationAlert
+            open={showSuccessAlert !== null}
+            message={showSuccessAlert}
+            severity="success"
+            onClose={handleCloseAlert}
+          />
+
+          {/* Error Alert */}
+          <NotificationAlert
+            open={showErrorAlert !== null}
+            message={showErrorAlert}
+            severity="error"
+            onClose={handleCloseAlert}
+          />
         </Box>
       ) : (
         <p>Student not found</p>

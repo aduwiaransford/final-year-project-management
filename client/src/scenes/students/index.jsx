@@ -1,15 +1,20 @@
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
+import NotificationAlert from "../../components/NotificationAlert";
 
 const Students = () => {
-  const { students, fetchStudents } = useContext(StudentContext);
-  const [selectedStudentId, setSelectedStudentId] = useState();
-  console.log(selectedStudentId);
+  const { students, fetchStudents, deleteMultipleStudents } =
+    useContext(StudentContext);
+  //const [selectedStudentId, setSelectedStudentId] = useState();
+
+  const [selectedStudentIds, setSelectedStudentIds] = useState([]);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(null);
+  console.log(selectedStudentIds);
 
   //fetch students
   useEffect(() => {
@@ -17,18 +22,46 @@ const Students = () => {
   }, []);
 
   // delete student
-  const handleDeleteStudent = async () => {
-    try {
-      const response = await axios.delete("/students", {
-        data: { id: selectedStudentId },
-      });
-      console.log(response.data.message); // Display success message from the backend
-      // You can perform additional actions, such as refreshing the list of students after deletion.
-    } catch (error) {
-      console.error(error.response.data.message); // Display error message from the backend
+  const handleDeleteStudents = async () => {
+    if (selectedStudentIds.length === 0) {
+      alert("Please select students to delete.");
+      return;
     }
-    fetchStudents();
+
+    try {
+      const res = await deleteMultipleStudents(selectedStudentIds);
+      console.log("Deleted students:", res.deletedStudentIds);
+
+      // Fetch the updated list of students
+      fetchStudents();
+
+      // Clear the selected students
+      setSelectedStudentIds([]);
+
+      setShowSuccessAlert("Students deleted successfully");
+    } catch (error) {
+      console.error("Error deleting students:", error);
+      setShowErrorAlert("Error deleting students");
+    }
   };
+
+  const handleCloseAlert = () => {
+    setShowSuccessAlert(null); // Clear the success message when the alert is closed
+    setShowErrorAlert(null); // Clear the error message when the alert is closed
+  };
+
+  // const handleDeleteStudent = async () => {
+  //   try {
+  //     const response = await axios.delete("/students", {
+  //       data: { id: selectedStudentId },
+  //     });
+  //     console.log(response.data.message); // Display success message from the backend
+  //     // You can perform additional actions, such as refreshing the list of students after deletion.
+  //   } catch (error) {
+  //     console.error(error.response.data.message); // Display error message from the backend
+  //   }
+  //   fetchStudents();
+  // };
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -45,6 +78,11 @@ const Students = () => {
       headerName: "LastName",
       flex: 1,
       cellClassName: "name-column--cell",
+    },
+    {
+      field: "email",
+      headerName: "email",
+      flex: 1,
     },
     {
       field: "contact",
@@ -67,10 +105,26 @@ const Students = () => {
             type="submit"
             color="secondary"
             variant="contained"
-            onClick={handleDeleteStudent}
+            onClick={handleDeleteStudents}
           >
-            Delete Student
+            Delete Students
           </Button>
+
+          {/* Success Alert */}
+          <NotificationAlert
+            open={showSuccessAlert !== null}
+            message={showSuccessAlert}
+            severity="success"
+            onClose={handleCloseAlert}
+          />
+
+          {/* Error Alert */}
+          <NotificationAlert
+            open={showErrorAlert !== null}
+            message={showErrorAlert}
+            severity="error"
+            onClose={handleCloseAlert}
+          />
         </Box>
       </Box>
       <Box
@@ -108,13 +162,8 @@ const Students = () => {
         <DataGrid
           checkboxSelection
           rows={students}
-          onSelectionModelChange={(ids) => {
-            const selectedIDs = new Set(ids);
-            const selectedRowData = students.find((row) =>
-              selectedIDs.has(row.id.toString())
-            );
-            setSelectedStudentId(selectedRowData ? selectedRowData.id : null);
-          }}
+          selectionModel={selectedStudentIds}
+          onSelectionModelChange={(ids) => setSelectedStudentIds(ids)}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

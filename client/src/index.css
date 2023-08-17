@@ -48,3 +48,22 @@ body,
   color: black;
   border-radius: 5px;
 }
+
+.category-list {
+  list-style: none;
+  padding: 0;
+}
+
+.category-item {
+  padding: 10px;
+  margin: 5px;
+  background-color: #4cceac;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.category-item:hover {
+  background-color: #ddd;
+  color: #333;
+}

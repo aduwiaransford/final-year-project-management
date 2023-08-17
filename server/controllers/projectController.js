@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const asyncHandler = require("express-async-handler");
 const Category = require("../models/Category");
 const Chapter = require('../models/Chapter')
@@ -29,6 +28,20 @@ const getAllCategories = asyncHandler(async (req, res) => {
     }
 });
 
+//delete category
+const deleteCategory = asyncHandler(async (req, res) => {
+    try {
+        const { id } = req.body; // Use req.params to get the URL parameter
+        const category = await Category.findById(id);
+        if (!category) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+        await category.deleteOne({ _id: id }); // Use _id for specifying the document ID
+        res.json({ message: "Category removed" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting category!" });
+    }
+});
 
 // chapters
 const createOrUpdateChapter = asyncHandler(async (req, res) => {
@@ -131,6 +144,7 @@ const addProjectTitle = asyncHandler(async (req, res) => {
 module.exports = {
     createCategory,
     getAllCategories,
+    deleteCategory,
     createOrUpdateChapter,
     getChaptersByStudentId,
     getSummaryByStudentId,

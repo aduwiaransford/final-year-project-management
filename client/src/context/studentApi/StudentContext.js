@@ -93,6 +93,21 @@ export const StudentProvider = ({ children }) => {
         }
     };
 
+    // Delete multiple students
+    const deleteMultipleStudents = async (studentIds) => {
+        try {
+            const response = await axios.delete('/students', {
+                data: { ids: studentIds },
+            });
+
+            // You can return the response to the component if needed
+            return response.data;
+        } catch (error) {
+            // Handle errors here (e.g., show an error message)
+            throw error;
+        }
+    };
+
     return (
         <StudentContext.Provider
             value={{
@@ -106,7 +121,8 @@ export const StudentProvider = ({ children }) => {
                 setShowSuccessAlert,
                 handleCloseAlert,
                 studentsWithout,
-                fetchStudentsWithout
+                fetchStudentsWithout,
+                deleteMultipleStudents
             }}
         >
             {children}

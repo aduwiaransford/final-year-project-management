@@ -107,6 +107,7 @@ const Dashboard = () => {
             }
           />
         </Box>
+        <Box></Box>
       </Box>
     </Box>
   );

@@ -31,6 +31,7 @@ const AddStudent = () => {
     lastname: "",
     contact: "",
     department: "",
+    email: "",
   });
 
   const handleFormChange = (e) => {
@@ -48,6 +49,7 @@ const AddStudent = () => {
       lastname: "",
       contact: "",
       department: "",
+      email: "",
     });
   };
 
@@ -150,6 +152,18 @@ const AddStudent = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
+            name="email"
+            label="email"
+            value={formData.email}
+            onChange={handleFormChange}
+            margin="normal"
+            required
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
             name="contact"
             label="Contact"
             value={formData.contact}
@@ -160,7 +174,7 @@ const AddStudent = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} mt={2}>
           <FormControl fullWidth required>
             <InputLabel>Department</InputLabel>
             <Select
