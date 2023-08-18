@@ -6,6 +6,12 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { LecturerContext } from "../../context/lecturerApi/LecturerApi";
 import NotificationAlert from "../../components/NotificationAlert";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
+import axios from "axios";
 
 const Lecturers = () => {
   const theme = useTheme();
@@ -14,6 +20,8 @@ const Lecturers = () => {
   const [selectedLectids, setSelectedLectids] = useState([]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(null);
   const [showErrorAlert, setShowErrorAlert] = useState(null);
+
+  const [newPassword, setNewPassword] = useState("");
 
   const { lecturers, fetchLecturers, deleteMultipleLecturers } =
     useContext(LecturerContext);
@@ -46,6 +54,34 @@ const Lecturers = () => {
     setShowErrorAlert(null); // Clear the error message when the alert is closed
   };
 
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const handleOpenResetDialog = (userId) => {
+    setSelectedUserId(userId);
+    setResetDialogOpen(true);
+  };
+
+  const handleCloseResetDialog = () => {
+    setSelectedUserId(null);
+    setResetDialogOpen(false);
+  };
+  const handleResetPassword = async () => {
+    try {
+      const res = await axios.post("/users/resetpassword", {
+        userId: selectedUserId,
+        newPassword: newPassword,
+      });
+      console.log(res.data);
+      setShowSuccessAlert("Password reset successfully");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      setShowErrorAlert("Error resetting password");
+    }
+    // Close the dialog after reset
+    handleCloseResetDialog();
+  };
+
   const columns = [
     {
       field: "firstname",
@@ -74,6 +110,83 @@ const Lecturers = () => {
       field: "department",
       headerName: "Department",
       flex: 1,
+    },
+    {
+      field: "isAdmin",
+      headerName: "Admin",
+      width: 120,
+      renderCell: (params) => {
+        const isAdmin = params.row.isAdmin;
+
+        const handleToggleChange = async () => {
+          try {
+            // Send a request to update the lecturer's isAdmin value
+            const res = await axios.post("/users/toggleadmin", {
+              id: params.row.id,
+              isAdmin: !isAdmin,
+            });
+
+            // Fetch the updated list of lecturers
+            console.log(res.data);
+            fetchLecturers();
+          } catch (error) {
+            console.error("Error updating isAdmin value:", error);
+            // Handle error if needed
+          }
+        };
+
+        return (
+          <div>
+            <input
+              type="checkbox"
+              checked={isAdmin}
+              onChange={handleToggleChange}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <button
+              className="productListEdit"
+              onClick={() => handleOpenResetDialog(params.row.id)}
+            >
+              Reset
+            </button>
+            <Dialog
+              open={resetDialogOpen && selectedUserId === params.row.id}
+              onClose={handleCloseResetDialog}
+              fullWidth
+            >
+              <DialogTitle>Reset User Password</DialogTitle>
+              <DialogContent>
+                <TextField
+                  label="New Password"
+                  variant="outlined"
+                  fullWidth
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseResetDialog} color="secondary">
+                  Cancel
+                </Button>
+                <Button onClick={handleResetPassword} color="secondary">
+                  Reset Password
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        );
+      },
     },
   ];
 

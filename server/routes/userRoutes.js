@@ -17,4 +17,10 @@ router.route('/assign')
 router.route('/changepassword')
     .post(usersController.changePassword)
 
+router.route('/resetpassword')
+    .post(usersController.resetPassword)
+
+router.route('/toggleadmin')
+    .post(usersController.toggleAdmin)
+
 module.exports = router

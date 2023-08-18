@@ -74,6 +74,26 @@ const updateUser = asyncHandler(async (req, res) => {
     res.json({ message: `${updatedUser.email} updated` });
 });
 
+
+//toggle admin status
+const toggleAdmin = asyncHandler(async (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: "User ID required" });
+    }
+    const user = await User.findById(id).exec();
+
+    if (!user) {
+        return res.status(400).json({ message: "User not found" });
+    }
+
+    user.isAdmin = !user.isAdmin;
+    await user.save();
+
+    res.json({ message: `${user.name} admin status updated` });
+});
+
 //delete a user
 const deleteUser = asyncHandler(async (req, res) => {
     const { ids } = req.body; // Array of student IDs
@@ -144,11 +164,29 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 
+const resetPassword = asyncHandler(async (req, res) => {
+    const { userId, newPassword } = req.body;
+
+    const user = await User.findById(userId).exec();
+    if (!user) {
+        return res.status(400).json({ message: "User not found" });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+});
+
+
 module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
     deleteUser,
     assignStudent,
-    changePassword
+    changePassword,
+    resetPassword,
+    toggleAdmin
 };
