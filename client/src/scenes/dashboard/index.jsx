@@ -9,7 +9,6 @@ import StatBox from "../../components/StatBox";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { LecturerContext } from "../../context/lecturerApi/LecturerApi";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
-import PieChart from "../../components/PieChart";
 import { useContext, useEffect } from "react";
 
 const Dashboard = () => {
@@ -107,16 +106,6 @@ const Dashboard = () => {
               />
             }
           />
-        </Box>
-        <Box
-          gridColumn="span 6"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <PieChart />
         </Box>
       </Box>
     </Box>
