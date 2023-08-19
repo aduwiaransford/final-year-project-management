@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import EditStudentDialog from "../../components/EditStudentDialog";
+import "../../index.css";
 
 const StudentWithSupervisor = () => {
   const { students } = useContext(StudentContext);
@@ -72,7 +73,7 @@ const StudentWithSupervisor = () => {
       renderCell: (params) => {
         return (
           <button
-            className="productListEdit"
+            className="edit-button"
             onClick={() => handleEditDialogOpen(params.row)}
           >
             Edit

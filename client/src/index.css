@@ -90,3 +90,12 @@ body,
     z-index: 999;
   }
 }
+
+/* Style the edi button */
+.edit-button {
+  border: none;
+  border-radius: 5px;
+  padding: 3px;
+  background-color: #4cceac;
+  cursor: pointer;
+}
