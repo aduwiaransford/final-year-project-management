@@ -21,11 +21,11 @@ const studentSchema = new mongoose.Schema({
         unique: true
     },
     index: {
-        type: Number,
+        type: String,
         required: true
     },
     contact: {
-        type: Number,
+        type: String,
         required: true
     },
     supervisor: {
@@ -41,6 +41,10 @@ const studentSchema = new mongoose.Schema({
     projectCategory: {
         type: String,
         default: "",
+    },
+    year: {
+        type: Number,
+        default: 0,
     }
 },
     {

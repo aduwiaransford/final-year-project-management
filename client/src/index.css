@@ -67,3 +67,26 @@ body,
   background-color: #ddd;
   color: #333;
 }
+
+/* Hide sidebar on screens smaller than 960px */
+@media (max-width: 960px) {
+  .app.show-sidebar .normal-sidebar {
+    display: none;
+  }
+}
+
+/* Style the toggle button */
+.toggle-menu-button {
+  display: none; /* Hide the button on larger screens */
+}
+
+/* Show the toggle button on smaller screens */
+@media (max-width: 960px) {
+  .toggle-menu-button {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+  }
+}

@@ -104,20 +104,19 @@ const Assign = () => {
           studentId,
           supervisorId: selectedLecturerId,
         });
-
         // Handle the success response here (e.g., show success message for each student)
         console.log("Student assigned successfully:", res.data);
       }
-
       // Fetch the updated list of students without supervisors again
       fetchStudentsWithout();
-
       // Clear the selected students and lecturer
       setSelectedStudentIds([]);
       setSelectedLecturerId(null);
+      setShowSuccessAlert("Students assigned successfully");
     } catch (error) {
       // Handle the error response here (e.g., show error message)
       console.error("Error assigning students:", error.response.data);
+      setShowErrorAlert("Error assigning students");
     }
   };
 

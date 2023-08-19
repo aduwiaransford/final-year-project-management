@@ -37,8 +37,8 @@ const uploadStudents = asyncHandler(async (req, res) => {
 
 
 const createNewStudent = asyncHandler(async (req, res) => {
-    const { firstname, lastname, index, contact, department, email } = req.body
-    if (!firstname || !lastname || !index || !contact || !department) {
+    const { firstname, lastname, index, contact, department, email, year } = req.body
+    if (!firstname || !lastname || !index || !contact || !department || !email || !year) {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -47,7 +47,7 @@ const createNewStudent = asyncHandler(async (req, res) => {
         return res.status(409).json({ message: 'Duplicate index Number' })
     }
 
-    const student = await Student.create({ firstname, lastname, index, contact, department, email })
+    const student = await Student.create({ firstname, lastname, index, contact, department, email, year })
     if (student) {
         res.status(201).json({ message: `New student ${firstname} created` })
     } else {

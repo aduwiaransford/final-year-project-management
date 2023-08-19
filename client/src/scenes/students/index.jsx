@@ -50,19 +50,6 @@ const Students = () => {
     setShowErrorAlert(null); // Clear the error message when the alert is closed
   };
 
-  // const handleDeleteStudent = async () => {
-  //   try {
-  //     const response = await axios.delete("/students", {
-  //       data: { id: selectedStudentId },
-  //     });
-  //     console.log(response.data.message); // Display success message from the backend
-  //     // You can perform additional actions, such as refreshing the list of students after deletion.
-  //   } catch (error) {
-  //     console.error(error.response.data.message); // Display error message from the backend
-  //   }
-  //   fetchStudents();
-  // };
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -92,6 +79,11 @@ const Students = () => {
     {
       field: "department",
       headerName: "Department",
+      flex: 1,
+    },
+    {
+      field: "year",
+      headerName: "year",
       flex: 1,
     },
   ];
