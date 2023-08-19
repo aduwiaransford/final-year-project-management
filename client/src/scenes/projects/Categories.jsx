@@ -3,18 +3,22 @@ import Header from "../../components/Header";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
 import "../../index.css";
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]); // State for categories
   const [newCategoryName, setNewCategoryName] = useState("");
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const { user } = useContext(AuthContext);
+  const accessToken = user?.data.accessToken;
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("/projects");
+      const res = await axios.get("/projects", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const categoriesWithId = res.data.map((category) => ({
         ...category,
         id: category._id,
@@ -25,12 +29,22 @@ const Categories = () => {
       // Handle errors here (e.g., show error message to the user)
     }
   };
-
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newCategoryName.trim() !== "") {
       try {
-        const res = await axios.post("/projects", { name: newCategoryName });
+        const res = await axios.post(
+          "/projects",
+          { name: newCategoryName }, // Request payload
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Authorization header
+            },
+          }
+        );
         const newCategory = {
           ...res.data,
           id: res.data._id,
@@ -49,9 +63,19 @@ const Categories = () => {
       "Are you sure you want to delete this category?"
     );
     if (confirmDelete) {
-      const res = await axios.delete("/projects", { data: { id } });
+      try {
+        const res = await axios.delete("/projects", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Authorization header
+          },
+          data: { id }, // Request payload
+        });
 
-      fetchCategories();
+        fetchCategories();
+      } catch (error) {
+        console.error("Error deleting category:", error.response.data);
+        // Handle errors here (e.g., show error message to the user)
+      }
     }
   };
   return (

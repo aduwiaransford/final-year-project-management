@@ -13,6 +13,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
 import { StudentContext } from "../../context/studentApi/StudentContext";
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const Assign = () => {
   const { studentsWithout, fetchStudentsWithout } = useContext(StudentContext);
@@ -52,6 +53,9 @@ const Assign = () => {
     },
   ];
 
+  const { user } = useContext(AuthContext);
+  const accessToken = user?.data.accessToken;
+
   //AutoComplete lecturer names
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
@@ -63,7 +67,11 @@ const Assign = () => {
   useEffect(() => {
     const fetchLecturers = async () => {
       try {
-        const res = await axios.get("/users");
+        const res = await axios.get("/users", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         const lecturersWithId = res.data
           .filter((lecture) => !lecture.isAdmin) // Filter out lecturers with isAdmin === true
           .map((lecture) => ({

@@ -68,7 +68,7 @@ const StudentWithSupervisor = () => {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 10,
       renderCell: (params) => {
         return (
           <button
@@ -79,6 +79,11 @@ const StudentWithSupervisor = () => {
           </button>
         );
       },
+    },
+    {
+      field: "year",
+      headerName: "Year",
+      flex: 1,
     },
   ];
 

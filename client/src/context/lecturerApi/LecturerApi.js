@@ -1,15 +1,23 @@
 // LecturerContext.js
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../authContext/AuthContext";
 
 export const LecturerContext = createContext();
 
 export const LecturerProvider = ({ children }) => {
+    const { user } = useContext(AuthContext);
     const [lecturers, setLecturers] = useState([]);
+
+    const accessToken = user?.data.accessToken;
 
     const fetchLecturers = async () => {
         try {
-            const res = await axios.get("/users");
+            const res = await axios.get("/users", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             const lecturersWithId = res.data.map((lecture) => ({
                 ...lecture,
                 id: lecture._id, // Add the id property using the _id field from the backend
@@ -26,6 +34,9 @@ export const LecturerProvider = ({ children }) => {
         try {
             const response = await axios.delete('/users', {
                 data: { ids: lecIDs },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
             });
 
             // You can return the response to the component if needed

@@ -7,14 +7,25 @@ import Header from "../../components/Header";
 import StatBox from "../../components/StatBox";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import { ProjectContext } from "../../context/projectApi/ProjectContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext/AuthContext";
+import { Select, MenuItem } from "@mui/material";
 
 const SupervisorDashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const { user } = useContext(AuthContext);
+
+  //filter by year
+  const yearsArray = Array.from({ length: 18 }, (_, index) => 2023 + index);
+
+  const [selectedYear, setSelectedYear] = useState(yearsArray[0]);
+
+  const handleSelectYear = (event) => {
+    const selectedYear = parseInt(event.target.value);
+    setSelectedYear(selectedYear);
+  };
 
   const { categories, fetchCategories } = useContext(ProjectContext);
   const { students, studentsWithout, fetchStudentsWithout } =
@@ -27,11 +38,12 @@ const SupervisorDashboard = () => {
   const loggedUserId = user.data.id;
   console.log(loggedUserId);
 
+  // Filter students based on the selected year
   const filteredStudents = students.filter((student) => {
-    return student.supervisor === loggedUserId;
+    return student.supervisor === loggedUserId && student.year === selectedYear;
   });
 
-  //total projects
+  // Update total projects based on the filtered students
   const totalProjects = filteredStudents.filter(
     (student) => student.projectTitle
   ).length;
@@ -44,6 +56,21 @@ const SupervisorDashboard = () => {
           title="DASHBOARD"
           subtitle="Welcome to your supervisor dashboard"
         />
+
+        <Box>
+          <Select
+            value={selectedYear}
+            onChange={handleSelectYear}
+            label="Select Year"
+            MenuProps={{ PaperProps: { style: { maxHeight: 200 } } }}
+          >
+            {yearsArray.map((year) => (
+              <MenuItem key={year} value={year}>
+                Year {year}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
       </Box>
 
       {/* GRID & CHARTS */}

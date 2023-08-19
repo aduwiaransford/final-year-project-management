@@ -1,16 +1,22 @@
 // ProjectContext.js
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-
+import { AuthContext } from "../authContext/AuthContext";
 export const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
     const [categories, setCategories] = useState([]);
     const [chapters, setChapters] = useState([]);
+    const { user } = useContext(AuthContext);
+    const accessToken = user?.data.accessToken;
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get("/projects");
+            const res = await axios.get("/projects", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
             const categoriesWithId = res.data.map((category) => ({
                 ...category,
                 id: category._id,

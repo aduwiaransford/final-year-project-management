@@ -1,7 +1,7 @@
 import axios from "axios";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -10,9 +10,9 @@ import {
   FormControl,
   InputLabel,
   Select,
-  useMediaQuery,
   Grid,
 } from "@mui/material";
+import { AuthContext } from "../../context/authContext/AuthContext";
 
 const AddLecturer = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -27,6 +27,9 @@ const AddLecturer = () => {
     department: "",
   });
 
+  const { user } = useContext(AuthContext);
+  const accessToken = user?.data.accessToken;
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -38,7 +41,7 @@ const AddLecturer = () => {
     try {
       const res = await axios.post("/users", formData, {
         headers: {
-          // Include any headers you need for authentication (if applicable)
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       setShowSuccessAlert(true);
