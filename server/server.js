@@ -18,6 +18,7 @@ app.use(cors())
 app.use(cookieParser(corsOptions))
 
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use('/', require('./routes/root'))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/students', require('./routes/studentsRoute'))
 app.use('/login', require('./routes/authRoute'))
