@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { LecturerContext } from "../../context/lecturerApi/LecturerApi";
 import NotificationAlert from "../../components/NotificationAlert";
+import { AuthContext } from "../../context/authContext/AuthContext";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -16,6 +17,9 @@ import axios from "axios";
 const Lecturers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const { user } = useContext(AuthContext);
+  const accessToken = user.data.accessToken;
 
   const [selectedLectids, setSelectedLectids] = useState([]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(null);
@@ -68,10 +72,18 @@ const Lecturers = () => {
   };
   const handleResetPassword = async () => {
     try {
-      const res = await axios.post("/users/resetpassword", {
-        userId: selectedUserId,
-        newPassword: newPassword,
-      });
+      const res = await axios.post(
+        "/users/resetpassword",
+        {
+          userId: selectedUserId,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       console.log(res.data);
       setShowSuccessAlert("Password reset successfully");
     } catch (error) {

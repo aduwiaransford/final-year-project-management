@@ -31,6 +31,7 @@ const UserProfilePopup = ({ username, onLogout }) => {
   };
 
   const { user } = useContext(AuthContext);
+  const accessToken = user.data.accessToken;
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,7 +76,7 @@ const UserProfilePopup = ({ username, onLogout }) => {
         },
         {
           headers: {
-            // Include any headers you need for authentication (if applicable)
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );

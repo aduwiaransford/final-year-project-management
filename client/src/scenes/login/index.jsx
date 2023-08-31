@@ -38,9 +38,9 @@ export default function SignIn() {
         sx={{
           boxShadow: 3,
           borderRadius: 2,
-          px: 4,
-          py: 6,
-          marginTop: 8,
+          px: 6,
+          py: 5,
+          marginTop: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -49,6 +49,13 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        <img
+          src="/aamustedlogo1.jpg"
+          alt="logo"
+          width="100"
+          height="100"
+          style={{ marginTop: "20px" }}
+        />
         <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -80,6 +87,7 @@ export default function SignIn() {
             sx={{ mt: 3, mb: 2 }}
             onClick={handleLogin}
             disabled={isFetching}
+            style={{ backgroundColor: "#570030" }}
           >
             Sign In
           </Button>
