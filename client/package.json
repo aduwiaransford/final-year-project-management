@@ -61,5 +61,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:2020"
+  "proxy": "https://aamusted-api.onrender.com/"
 }
