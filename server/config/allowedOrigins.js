@@ -1,6 +1,5 @@
 const allowedOrigins = [
-    'http://localhost:3000',
-    "https://aamusted-supervisors.onrender.com"
+    "https://aamusted-supervision.onrender.com"
 ]
 
 module.exports = allowedOrigins

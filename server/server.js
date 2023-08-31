@@ -7,7 +7,6 @@ const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
 const PORT = process.env.PORT || 2020
 
 connectDB()
