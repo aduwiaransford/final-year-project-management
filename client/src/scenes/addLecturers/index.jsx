@@ -103,7 +103,7 @@ const AddLecturer = () => {
           <TextField
             name="email"
             label="email"
-            value={formData.email}
+            value={formData.email.toLowerCase()}
             onChange={handleFormChange}
             margin="normal"
             required
