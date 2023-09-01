@@ -24,6 +24,13 @@ const Dashboard = () => {
     fetchLecturers();
     fetchCategories();
   }, []);
+
+  const responsiveGridColumns = {
+    small: "1fr",
+    medium: "repeat(2, 1fr)",
+    large: "repeat(4, 1fr)",
+  };
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -34,13 +41,13 @@ const Dashboard = () => {
       {/* GRID & CHARTS */}
       <Box
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateColumns={responsiveGridColumns.large}
         gridAutoRows="140px"
         gap="20px"
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 1"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -57,7 +64,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 1"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -74,7 +81,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 1"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -91,7 +98,7 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 1"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
