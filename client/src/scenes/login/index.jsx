@@ -7,11 +7,20 @@ import { AuthContext } from "../../context/authContext/AuthContext";
 import { useState, useContext } from "react";
 import { login } from "../../context/authContext/apiCalls";
 import { useNavigate } from "react-router-dom";
+import NotificationAlert from "../../components/NotificationAlert";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isFetching, dispatch } = useContext(AuthContext);
+
+  const [showSuccessAlert, setShowSuccessAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(null);
+
+  const handleCloseAlert = () => {
+    setShowSuccessAlert(null); // Clear the success message when the alert is closed
+    setShowErrorAlert(null); // Clear the error message when the alert is closed
+  };
 
   const { user } = useContext(AuthContext);
 
@@ -28,6 +37,7 @@ export default function SignIn() {
         navigate("/supervisor-dashboard");
       }
     } catch (error) {
+      setShowErrorAlert(error.response.data.message);
       console.error("Login failed", error);
     }
   };
@@ -91,6 +101,13 @@ export default function SignIn() {
           >
             Sign In
           </Button>
+          {/* Error Alert */}
+          <NotificationAlert
+            open={showErrorAlert !== null}
+            message={showErrorAlert}
+            severity="error"
+            onClose={handleCloseAlert}
+          />
         </Box>
       </Box>
     </Container>
