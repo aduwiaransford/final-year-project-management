@@ -11,7 +11,7 @@ export const StudentProvider = ({ children }) => {
 
     const fetchStudents = async () => {
         try {
-            const res = await axios.get("/students");
+            const res = await axios.get("https://aamusted-api.onrender.com/students");
             const studentsWithId = res.data.map((student) => ({
                 ...student,
                 id: student._id,
@@ -25,7 +25,7 @@ export const StudentProvider = ({ children }) => {
 
     const addStudent = async (formData) => {
         try {
-            const res = await axios.post("/students", formData, {
+            const res = await axios.post("https://aamusted-api.onrender.com/students", formData, {
                 headers: {
                     // Include any headers you need for authentication (if applicable)
                 },
@@ -59,7 +59,7 @@ export const StudentProvider = ({ children }) => {
         formData.append("file", file);
 
         try {
-            const res = await axios.post("/students/upload", formData, {
+            const res = await axios.post("https://aamusted-api.onrender.com/students/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -81,7 +81,7 @@ export const StudentProvider = ({ children }) => {
 
     const fetchStudentsWithout = async () => {
         try {
-            const res = await axios.get("/students/without-supervisor");
+            const res = await axios.get("https://aamusted-api.onrender.com/students/without-supervisor");
             const studentsWithId = res.data.map((student) => ({
                 ...student,
                 id: student._id, // Add the id property using the _id field from the backend
@@ -96,7 +96,7 @@ export const StudentProvider = ({ children }) => {
     // Delete multiple students
     const deleteMultipleStudents = async (studentIds) => {
         try {
-            const response = await axios.delete('/students', {
+            const response = await axios.delete("https://aamusted-api.onrender.com/students", {
                 data: { ids: studentIds },
             });
 

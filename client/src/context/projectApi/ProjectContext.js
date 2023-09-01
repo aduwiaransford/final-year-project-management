@@ -12,7 +12,7 @@ export const ProjectProvider = ({ children }) => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get("/projects", {
+            const res = await axios.get("https://aamusted-api.onrender.com/projects", {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -30,7 +30,7 @@ export const ProjectProvider = ({ children }) => {
 
     const createCategory = async (name) => {
         try {
-            const res = await axios.post("/projects", { name });
+            const res = await axios.post("https://aamusted-api.onrender.com/projects", { name });
             const newCategory = {
                 ...res.data,
                 id: res.data._id,
@@ -44,7 +44,7 @@ export const ProjectProvider = ({ children }) => {
 
     const fetchChaptersByStudentId = async (studentId) => {
         try {
-            const res = await axios.get(`projects/chapters/${studentId}`);
+            const res = await axios.get(`https://aamusted-api.onrender.com/projects/chapters/${studentId}`);
             setChapters(res.data);
         } catch (error) {
             console.error("Error fetching chapters:", error.response.data);
@@ -54,7 +54,7 @@ export const ProjectProvider = ({ children }) => {
 
     const createOrUpdateChapter = async (chapterData) => {
         try {
-            const res = await axios.post("/projects/chapters", chapterData);
+            const res = await axios.post("https://aamusted-api.onrender.com/projects/chapters", chapterData);
             const newChapter = {
                 ...res.data,
                 id: res.data._id,
@@ -71,7 +71,7 @@ export const ProjectProvider = ({ children }) => {
     // Function to fetch the summary report from the backend
     const fetchSummaryReport = async (id) => {
         try {
-            const res = await axios.get(`/projects/summary/${id}`);
+            const res = await axios.get(`https://aamusted-api.onrender.com/projects/summary/${id}`);
             setSummaryReport(res.data);
             console.log(res.data);
         } catch (error) {
@@ -83,7 +83,7 @@ export const ProjectProvider = ({ children }) => {
     // add project title
     const addProjectTitle = async (id, projectTitle, projectCategory) => {
         try {
-            const response = await axios.post('/projects/project-title', {
+            const response = await axios.post('https://aamusted-api.onrender.com/projects/project-title', {
                 id: id,
                 projectTitle: projectTitle,
                 projectCategory: projectCategory
@@ -98,7 +98,7 @@ export const ProjectProvider = ({ children }) => {
     // Function to fetch project title
     const fetchProjectTitle = async (id) => {
         try {
-            const response = await axios.post('/projects/project-title', {
+            const response = await axios.post('https://aamusted-api.onrender.com/projects/project-title', {
                 id: id,
             });
 
