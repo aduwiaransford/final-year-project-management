@@ -13,7 +13,7 @@ export const LecturerProvider = ({ children }) => {
 
     const fetchLecturers = async () => {
         try {
-            const res = await axios.get("/users", {
+            const res = await axios.get("https://aamusted-api.onrender.com/users", {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -32,7 +32,7 @@ export const LecturerProvider = ({ children }) => {
     //delete lecturers
     const deleteMultipleLecturers = async (lecIDs) => {
         try {
-            const response = await axios.delete('/users', {
+            const response = await axios.delete('https://aamusted-api.onrender.com/users', {
                 data: { ids: lecIDs },
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

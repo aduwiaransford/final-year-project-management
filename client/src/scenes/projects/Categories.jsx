@@ -14,7 +14,7 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("/projects", {
+      const res = await axios.get("https://aamusted-api.onrender.com/projects", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -37,7 +37,7 @@ const Categories = () => {
     if (newCategoryName.trim() !== "") {
       try {
         const res = await axios.post(
-          "/projects",
+          "https://aamusted-api.onrender.com/projects",
           { name: newCategoryName }, // Request payload
           {
             headers: {
@@ -64,7 +64,7 @@ const Categories = () => {
     );
     if (confirmDelete) {
       try {
-        const res = await axios.delete("/projects", {
+        const res = await axios.delete("https://aamusted-api.onrender.com/projects", {
           headers: {
             Authorization: `Bearer ${accessToken}`, // Authorization header
           },

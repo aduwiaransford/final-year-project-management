@@ -39,7 +39,7 @@ const AddLecturer = () => {
     e.preventDefault();
     console.log(formData);
     try {
-      const res = await axios.post("/users", formData, {
+      const res = await axios.post("https://aamusted-api.onrender.com/users", formData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

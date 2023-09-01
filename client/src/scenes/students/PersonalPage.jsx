@@ -132,7 +132,7 @@ const PersonalPage = () => {
       // Create the email content with supervisor's name
       const emailContent = `Dear ${student.firstname},\n\nHere is the project report summary from your supervisor ${user.data.firstname}:\n\n${formattedSummary}`;
 
-      const res = await axios.post("/students/send-mail", {
+      const res = await axios.post("https://aamusted-api.onrender.com/students/send-mail", {
         studentId: id,
         subject: "Project Report",
         chapterSummary: emailContent, // Pass the formatted email content

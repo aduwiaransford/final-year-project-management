@@ -67,7 +67,7 @@ const Assign = () => {
   useEffect(() => {
     const fetchLecturers = async () => {
       try {
-        const res = await axios.get("/users", {
+        const res = await axios.get("https://aamusted-api.onrender.com/users", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -108,7 +108,7 @@ const Assign = () => {
     try {
       for (const studentId of selectedStudentIds) {
         // Make the API call to assign the student to the lecturer
-        const res = await axios.post(`/users/assign`, {
+        const res = await axios.post(`https://aamusted-api.onrender.com/users/assign`, {
           studentId,
           supervisorId: selectedLecturerId,
         });

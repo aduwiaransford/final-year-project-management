@@ -73,7 +73,7 @@ const Lecturers = () => {
   const handleResetPassword = async () => {
     try {
       const res = await axios.post(
-        "/users/resetpassword",
+        "https://aamusted-api.onrender.com/users/resetpassword",
         {
           userId: selectedUserId,
           newPassword: newPassword,

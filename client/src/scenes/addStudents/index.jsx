@@ -74,7 +74,7 @@ const AddStudent = () => {
       formData.append("file", selectedFile);
 
       try {
-        const res = await axios.post("/students/upload", formData, {
+        const res = await axios.post("https://aamusted-api.onrender.com/students/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
