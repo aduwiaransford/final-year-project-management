@@ -133,7 +133,7 @@ const Lecturers = () => {
         const handleToggleChange = async () => {
           try {
             // Send a request to update the lecturer's isAdmin value
-            const res = await axios.post("/users/toggleadmin", {
+            const res = await axios.post("https://aamusted-api.onrender.com/users/toggleadmin", {
               id: params.row.id,
               isAdmin: !isAdmin,
             });

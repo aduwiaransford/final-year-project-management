@@ -72,7 +72,7 @@ const PersonalPage = () => {
     console.log(chapterData);
 
     // Reload the page
-    window.location.reload();
+   // window.location.reload();
   };
 
   //fetch chapters remarks
