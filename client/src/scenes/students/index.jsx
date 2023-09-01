@@ -19,7 +19,7 @@ const Students = () => {
   //fetch students
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [students]);
 
   // delete student
   const handleDeleteStudents = async () => {

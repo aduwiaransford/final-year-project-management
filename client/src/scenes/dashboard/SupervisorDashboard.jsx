@@ -43,6 +43,19 @@ const SupervisorDashboard = () => {
     return student.supervisor === loggedUserId && student.year === selectedYear;
   });
 
+  //students with project category of web app
+  const webStudents = filteredStudents.filter((student) => {
+    return student.projectCategory === "Web app";
+  });
+  //students with project category of Mobile app
+  const MobileStudents = filteredStudents.filter((student) => {
+    return student.projectCategory === "Mobile app";
+  });
+  //students with project category of Desktop app
+  const DesktopStudents = filteredStudents.filter((student) => {
+    return student.projectCategory === "Desktop app";
+  });
+
   // Update total projects based on the filtered students
   const totalProjects = filteredStudents.filter(
     (student) => student.projectTitle
@@ -73,7 +86,7 @@ const SupervisorDashboard = () => {
         </Box>
       </Box>
 
-      {/* GRID & CHARTS */}
+      {/* GRID  */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -82,7 +95,7 @@ const SupervisorDashboard = () => {
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 6"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -99,7 +112,7 @@ const SupervisorDashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 6"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -116,16 +129,51 @@ const SupervisorDashboard = () => {
           />
         </Box>
 
+        {/* ROW 2 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 4"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title={categories.length}
-            subtitle="Project Categories"
+            title={DesktopStudents.length}
+            subtitle="Desktop Apps"
+            icon={
+              <TrafficIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={MobileStudents.length}
+            subtitle="Mobile Apps"
+            icon={
+              <TrafficIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
+        <Box
+          gridColumn="span 4"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title={webStudents.length}
+            subtitle="Web apps"
             icon={
               <TrafficIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
