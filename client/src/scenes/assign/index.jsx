@@ -111,7 +111,12 @@ const Assign = () => {
         const res = await axios.post(`https://aamusted-api.onrender.com/users/assign`, {
           studentId,
           supervisorId: selectedLecturerId,
-        });
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          }}
+        );
         // Handle the success response here (e.g., show success message for each student)
         console.log("Student assigned successfully:", res.data);
       }
