@@ -145,13 +145,6 @@ const NormalSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Update pasword"
-              to="/students-with-supervisor"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
           </Box>
         </Menu>
       </ProSidebar>

@@ -37,7 +37,7 @@ export default function SignIn() {
         navigate("/supervisor-dashboard");
       }
     } catch (error) {
-      setShowErrorAlert(error.response.data.message);
+      setShowErrorAlert("Login failed");
       console.error("Login failed", error);
     }
   };
