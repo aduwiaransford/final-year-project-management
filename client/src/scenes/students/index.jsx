@@ -14,7 +14,6 @@ const Students = () => {
   const [selectedStudentIds, setSelectedStudentIds] = useState([]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(null);
   const [showErrorAlert, setShowErrorAlert] = useState(null);
-  console.log(selectedStudentIds);
 
   //fetch students
   useEffect(() => {

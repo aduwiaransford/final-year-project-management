@@ -133,10 +133,18 @@ const Lecturers = () => {
         const handleToggleChange = async () => {
           try {
             // Send a request to update the lecturer's isAdmin value
-            const res = await axios.post("https://aamusted-api.onrender.com/users/toggleadmin", {
-              id: params.row.id,
-              isAdmin: !isAdmin,
-            });
+            const res = await axios.post(
+              "https://aamusted-api.onrender.com/users/toggleadmin",
+              {
+                id: params.row.id,
+                isAdmin: !isAdmin,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+            );
 
             // Fetch the updated list of lecturers
             console.log(res.data);
