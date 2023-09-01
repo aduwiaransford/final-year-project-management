@@ -72,7 +72,7 @@ const PersonalPage = () => {
     console.log(chapterData);
 
     // Reload the page
-   // window.location.reload();
+    window.location.reload();
   };
 
   //fetch chapters remarks
@@ -132,11 +132,14 @@ const PersonalPage = () => {
       // Create the email content with supervisor's name
       const emailContent = `Dear ${student.firstname},\n\nHere is the project report summary from your supervisor ${user.data.firstname}:\n\n${formattedSummary}`;
 
-      const res = await axios.post("https://aamusted-api.onrender.com/students/send-mail", {
-        studentId: id,
-        subject: "Project Report",
-        chapterSummary: emailContent, // Pass the formatted email content
-      });
+      const res = await axios.post(
+        "https://aamusted-api.onrender.com/students/send-mail",
+        {
+          studentId: id,
+          subject: "Project Report",
+          chapterSummary: emailContent, // Pass the formatted email content
+        }
+      );
 
       console.log("email successfully sent", res);
       setShowSuccessAlert("Mail sent successfully");
