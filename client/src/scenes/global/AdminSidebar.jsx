@@ -105,7 +105,7 @@ const Sidebar = () => {
           </MenuItem>
 
           {!isCollapsed && (
-            <Box mb="25px">
+            <Box mb="10px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="logo"
