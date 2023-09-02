@@ -1,7 +1,4 @@
-import axios from "axios";
-import Header from "../../components/Header";
-import NotificationAlert from "../../components/NotificationAlert";
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -14,6 +11,8 @@ import {
 } from "@mui/material";
 import "../../index.css";
 import { StudentContext } from "../../context/studentApi/StudentContext";
+import Header from "../../components/Header";
+import NotificationAlert from "../../components/NotificationAlert";
 
 const AddStudent = () => {
   const {
@@ -39,9 +38,17 @@ const AddStudent = () => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    // Clear any previous errors for this field when the input changes
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
+    // Check for numeric input for the "Index Number"
+    if (name === "index" && !/^\d+$/.test(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "Index Number must be numeric",
+      }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -150,7 +157,7 @@ const AddStudent = () => {
       <Box display="flex" justifyContent="space-between">
         {" "}
         {/* Update justifyContent */}
-        <Header title="ADD STUDENT" subtitle="Add new stdudent data" />
+        <Header title="ADD STUDENT" subtitle="Add new student data" />
         <Box>
           <label htmlFor="file-upload" className="import-label">
             Import Students
@@ -174,8 +181,6 @@ const AddStudent = () => {
             required
             variant="filled"
             fullWidth
-            error={!!errors.email}
-            helperText={errors.email}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -200,18 +205,22 @@ const AddStudent = () => {
             required
             variant="filled"
             fullWidth
+            error={!!errors.index}
+            helperText={errors.index}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             name="email"
-            label="email"
+            label="Email"
             value={formData.email}
             onChange={handleFormChange}
             margin="normal"
             required
             variant="filled"
             fullWidth
+            error={!!errors.email}
+            helperText={errors.email}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -226,11 +235,10 @@ const AddStudent = () => {
             fullWidth
           />
         </Grid>
-
         <Grid item xs={12} md={2}>
           <TextField
             name="year"
-            label="year"
+            label="Year"
             value={formData.year}
             onChange={handleFormChange}
             margin="normal"
@@ -241,7 +249,6 @@ const AddStudent = () => {
             helperText={errors.year}
           />
         </Grid>
-
         <Grid item xs={12} md={6} mt={2}>
           <FormControl fullWidth required error={!!errors.department}>
             <InputLabel>Department</InputLabel>
