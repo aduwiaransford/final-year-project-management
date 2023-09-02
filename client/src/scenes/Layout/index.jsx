@@ -17,9 +17,9 @@ const Layout = () => {
 
   const { user } = useContext(AuthContext);
 
-  // if (!user) {
-  //   return <Navigate to="/" />;
-  // }
+  if (!user) {
+    return <Navigate to="/" />;
+  }
 
   if (user.data.isAdmin) {
     return (
