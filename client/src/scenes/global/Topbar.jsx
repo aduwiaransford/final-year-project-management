@@ -3,8 +3,6 @@ import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import UserProfilePopup from "../../components/Popup"; // Import the UserProfilePopup component
 import { AuthContext } from "../../context/authContext/AuthContext";
 
@@ -33,12 +31,7 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
+
         {/* Use the UserProfilePopup component here */}
         <UserProfilePopup username={username} onLogout={handleLogout} />
       </Box>
