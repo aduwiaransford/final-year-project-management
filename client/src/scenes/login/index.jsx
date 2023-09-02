@@ -16,6 +16,8 @@ export default function SignIn() {
 
   const [showSuccessAlert, setShowSuccessAlert] = useState(null);
   const [showErrorAlert, setShowErrorAlert] = useState(null);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleCloseAlert = () => {
     setShowSuccessAlert(null); // Clear the success message when the alert is closed
@@ -28,6 +30,23 @@ export default function SignIn() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    // Reset previous error messages
+    setEmailError("");
+    setPasswordError("");
+
+    // Validate email and password
+    if (!email.trim()) {
+      setEmailError("Email is required");
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+    }
+
+    // If there are errors, don't proceed with login
+    if (emailError || passwordError) {
+      return;
+    }
+
     try {
       const userData = await login({ email, password }, dispatch);
 
@@ -77,6 +96,8 @@ export default function SignIn() {
             autoComplete="email"
             autoFocus
             onChange={(e) => setEmail(e.target.value.toLocaleLowerCase())}
+            error={!!emailError}
+            helperText={emailError}
           />
           <TextField
             margin="normal"
@@ -88,6 +109,8 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
+            error={!!passwordError}
+            helperText={passwordError}
           />
 
           <Button
