@@ -83,13 +83,7 @@ const NormalSidebar = () => {
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
-          <img
-            src="/logo.png"
-            alt="logo"
-            width="100"
-            height="100"
-            style={{ marginTop: "20px" }}
-          />
+
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -111,6 +105,20 @@ const NormalSidebar = () => {
               </Box>
             )}
           </MenuItem>
+
+          {!isCollapsed && (
+            <Box mb="25px">
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <img
+                  alt="logo"
+                  width="100px"
+                  height="100px"
+                  src="/logo.png"
+                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                />
+              </Box>
+            </Box>
+          )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
