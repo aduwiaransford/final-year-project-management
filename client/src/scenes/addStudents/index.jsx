@@ -13,6 +13,7 @@ import "../../index.css";
 import { StudentContext } from "../../context/studentApi/StudentContext";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
+import axios from "axios";
 
 const AddStudent = () => {
   const {
