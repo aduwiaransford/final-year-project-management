@@ -112,7 +112,7 @@ const Sidebar = () => {
                   width="100px"
                   height="100px"
                   src="/logo.png"
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
+                  style={{ cursor: "pointer" }}
                 />
               </Box>
             </Box>
