@@ -74,11 +74,15 @@ const AddStudent = () => {
       formData.append("file", selectedFile);
 
       try {
-        const res = await axios.post("https://aamusted-api.onrender.com/students/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res = await axios.post(
+          "https://aamusted-api.onrender.com/students/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         // Handle success response here (e.g., show success message)
         setShowSuccessAlert(true);
         console.log(res.data);
@@ -205,7 +209,9 @@ const AddStudent = () => {
               <MenuItem value="Hospitality">
                 B. Sc. Catering and Hospitality Education
               </MenuItem>
-              <MenuItem value="Accounting">Accounting</MenuItem>
+              <MenuItem value="Accounting">
+                B. Sc. Accounting Education
+              </MenuItem>
               <MenuItem value="Economics">B. Sc. Economics Education</MenuItem>
               <MenuItem value="Mathematics">
                 B. Sc. Mathematics Education
