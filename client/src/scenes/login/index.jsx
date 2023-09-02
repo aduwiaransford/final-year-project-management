@@ -110,7 +110,6 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleLogin}
-            disabled={isFetching}
             style={{ backgroundColor: "#570030" }}
           >
             Sign In
