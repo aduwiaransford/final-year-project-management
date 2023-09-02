@@ -82,11 +82,11 @@ const Sidebar = () => {
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <img
-            src="/logo.jpg"
+            src="/logo.png"
             alt="logo"
             width="100"
             height="100"
-            // style={{ marginTop: "20px" }}
+            style={{ marginTop: "20px" }}
           />
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
