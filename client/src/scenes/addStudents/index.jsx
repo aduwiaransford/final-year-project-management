@@ -265,18 +265,12 @@ const AddStudent = () => {
               variant="filled"
             >
               <MenuItem value="Information Technology">
-                B.Sc. Information Technology
+                Information Technology
               </MenuItem>
-              <MenuItem value="Hospitality">
-                B. Sc. Catering and Hospitality Education
-              </MenuItem>
-              <MenuItem value="Accounting">
-                B. Sc. Accounting Education
-              </MenuItem>
-              <MenuItem value="Economics">B. Sc. Economics Education</MenuItem>
-              <MenuItem value="Mathematics">
-                B. Sc. Mathematics Education
-              </MenuItem>
+              <MenuItem value="Hospitality">Hospitality</MenuItem>
+              <MenuItem value="Accounting">Accounting</MenuItem>
+              <MenuItem value="Economics">Economics</MenuItem>
+              <MenuItem value="Mathematics">Mathematics</MenuItem>
             </Select>
             <Box sx={{ color: "red" }}>{errors.department}</Box>
           </FormControl>
