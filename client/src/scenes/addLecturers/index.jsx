@@ -35,9 +35,22 @@ const AddLecturer = () => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    // Clear any previous errors for this field when the input changes
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
+    // Check for numeric input for the "Contact" field
+    if (name === "contact") {
+      if (value === "" || /^\d+$/.test(value)) {
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Contact must be numeric",
+        }));
+      }
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {

@@ -40,15 +40,15 @@ const AddStudent = () => {
   const handleFormChange = (e) => {
     const { name, value } = e.target;
 
-    // Check for numeric input for the "Index Number"
-    if (name === "index") {
+    // Check for numeric input for the "Index Number" and "Contact" fields
+    if (name === "index" || name === "contact") {
       if (value === "" || /^\d+$/.test(value)) {
         setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
         setFormData((prevData) => ({ ...prevData, [name]: value }));
       } else {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          [name]: "Index Number must be numeric",
+          [name]: `${name} must be numeric`,
         }));
       }
     } else {
@@ -244,7 +244,7 @@ const AddStudent = () => {
         <Grid item xs={12} md={2}>
           <TextField
             name="year"
-            label="Year"
+            label="Year eg. 2023"
             value={formData.year}
             onChange={handleFormChange}
             margin="normal"
