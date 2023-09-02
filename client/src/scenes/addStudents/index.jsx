@@ -41,11 +41,16 @@ const AddStudent = () => {
     const { name, value } = e.target;
 
     // Check for numeric input for the "Index Number"
-    if (name === "index" && !/^\d+$/.test(value)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: "Index Number must be numeric",
-      }));
+    if (name === "index") {
+      if (value === "" || /^\d+$/.test(value)) {
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: "Index Number must be numeric",
+        }));
+      }
     } else {
       setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
       setFormData((prevData) => ({ ...prevData, [name]: value }));
