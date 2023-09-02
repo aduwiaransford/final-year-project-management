@@ -13,6 +13,7 @@ import "../../index.css";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import Header from "../../components/Header";
 import NotificationAlert from "../../components/NotificationAlert";
+import axios from "axios";
 
 const AddLecturer = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
