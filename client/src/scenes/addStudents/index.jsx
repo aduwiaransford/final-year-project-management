@@ -35,24 +35,68 @@ const AddStudent = () => {
     year: "",
   });
 
+  const [errors, setErrors] = useState({}); // Initialize errors object
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    // Clear any previous errors for this field when the input changes
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addStudent(formData);
-    // Optionally, you can reset the form fields after successful submission
-    setFormData({
-      index: "",
-      firstname: "",
-      lastname: "",
-      contact: "",
-      department: "",
-      email: "",
-      year: "",
-    });
+    const formErrors = {}; // Create a new errors object for this submission
+
+    // Check for errors in each field
+    if (!formData.index) {
+      formErrors.index = "Index Number is required";
+    }
+    if (!formData.firstname) {
+      formErrors.firstname = "First Name is required";
+    }
+    if (!formData.lastname) {
+      formErrors.lastname = "Last Name is required";
+    }
+    if (!formData.contact) {
+      formErrors.contact = "Contact is required";
+    }
+    if (!formData.department) {
+      formErrors.department = "Department is required";
+    }
+    if (!formData.email) {
+      formErrors.email = "Email is required";
+    } else if (!isValidEmail(formData.email)) {
+      formErrors.email = "Invalid email format";
+    }
+    if (!formData.year) {
+      formErrors.year = "Year is required";
+    }
+
+    // Check if there are any errors
+    if (Object.keys(formErrors).length === 0) {
+      // If no errors, submit the form
+      addStudent(formData);
+      // Optionally, you can reset the form fields after successful submission
+      setFormData({
+        index: "",
+        firstname: "",
+        lastname: "",
+        contact: "",
+        department: "",
+        email: "",
+        year: "",
+      });
+    } else {
+      // If there are errors, update the errors state
+      setErrors(formErrors);
+    }
+  };
+
+  // Helper function to validate email format
+  const isValidEmail = (email) => {
+    // You can use a regular expression or a library like 'validator' for more robust email validation
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   // File upload
@@ -130,6 +174,8 @@ const AddStudent = () => {
             required
             variant="filled"
             fullWidth
+            error={!!errors.email}
+            helperText={errors.email}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -191,11 +237,13 @@ const AddStudent = () => {
             required
             variant="filled"
             fullWidth
+            error={!!errors.year}
+            helperText={errors.year}
           />
         </Grid>
 
         <Grid item xs={12} md={6} mt={2}>
-          <FormControl fullWidth required>
+          <FormControl fullWidth required error={!!errors.department}>
             <InputLabel>Department</InputLabel>
             <Select
               name="department"
@@ -217,6 +265,7 @@ const AddStudent = () => {
                 B. Sc. Mathematics Education
               </MenuItem>
             </Select>
+            <Box sx={{ color: "red" }}>{errors.department}</Box>
           </FormControl>
         </Grid>
       </Grid>
