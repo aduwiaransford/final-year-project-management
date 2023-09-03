@@ -86,6 +86,11 @@ const UserProfilePopup = ({ username, onLogout }) => {
       setNotificationMessage(res.data.message); // Use the actual response message
       setNotificationSeverity("success");
       setNotificationOpen(true);
+
+      // Clear the input fields
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (error) {
       console.error("Error changing password:", error.response.data);
 
