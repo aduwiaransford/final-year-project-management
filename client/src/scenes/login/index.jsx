@@ -42,8 +42,8 @@ export default function SignIn() {
       setPasswordError("Password is required");
     }
 
-    // If there are errors, don't proceed with login
-    if (emailError || passwordError) {
+    // If either the email or password is empty, don't proceed with login
+    if (!email.trim() || !password.trim()) {
       return;
     }
 
