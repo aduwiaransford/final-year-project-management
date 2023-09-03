@@ -7,14 +7,22 @@ import { AuthContext } from "../../context/authContext/AuthContext";
 import { useState, useContext } from "react";
 import { login } from "../../context/authContext/apiCalls";
 import { useNavigate } from "react-router-dom";
+import NotificationAlert from "../../components/NotificationAlert";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isFetching, dispatch } = useContext(AuthContext);
 
+  const [showSuccessAlert, setShowSuccessAlert] = useState(null);
+  const [showErrorAlert, setShowErrorAlert] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const handleCloseAlert = () => {
+    setShowSuccessAlert(null); // Clear the success message when the alert is closed
+    setShowErrorAlert(null); // Clear the error message when the alert is closed
+  };
 
   const { user } = useContext(AuthContext);
 
@@ -48,6 +56,7 @@ export default function SignIn() {
         navigate("/supervisor-dashboard");
       }
     } catch (error) {
+      setShowErrorAlert("Login failed");
       console.error("Login failed", error);
     }
   };
@@ -110,10 +119,18 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleLogin}
+            disabled={isFetching}
             style={{ backgroundColor: "#570030" }}
           >
             Sign In
           </Button>
+          {/* Error Alert */}
+          <NotificationAlert
+            open={showErrorAlert !== null}
+            message={showErrorAlert}
+            severity="error"
+            onClose={handleCloseAlert}
+          />
         </Box>
       </Box>
     </Container>
