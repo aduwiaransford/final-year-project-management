@@ -18,7 +18,7 @@ import NotificationAlert from "./NotificationAlert";
 
 const UserProfilePopup = ({ username, onLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [changePasswordOpen, setChangePasswordOpen] = useState(false); // State for the change password dialog
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,7 +59,6 @@ const UserProfilePopup = ({ username, onLogout }) => {
 
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
-      console.error("New password and confirm password do not match");
       setNotificationMessage("New password and confirm password do not match");
       setNotificationSeverity("error");
       setNotificationOpen(true);
@@ -80,10 +79,8 @@ const UserProfilePopup = ({ username, onLogout }) => {
           },
         }
       );
-      console.log(res.data);
-      handleCloseChangePassword();
 
-      setNotificationMessage("password changed successfully"); // Use the actual response message
+      setNotificationMessage("Password changed successfully");
       setNotificationSeverity("success");
       setNotificationOpen(true);
 
@@ -91,10 +88,10 @@ const UserProfilePopup = ({ username, onLogout }) => {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch (error) {
-      console.error("Error changing password");
 
-      setNotificationMessage(error.response.data.message); // Use the actual error message
+      handleCloseChangePassword();
+    } catch (error) {
+      setNotificationMessage(error.response.data.message);
       setNotificationSeverity("error");
       setNotificationOpen(true);
     }
