@@ -83,7 +83,7 @@ const UserProfilePopup = ({ username, onLogout }) => {
       console.log(res.data);
       handleCloseChangePassword();
 
-      setNotificationMessage(res.data.message); // Use the actual response message
+      setNotificationMessage("password changed successfully"); // Use the actual response message
       setNotificationSeverity("success");
       setNotificationOpen(true);
 
@@ -92,7 +92,7 @@ const UserProfilePopup = ({ username, onLogout }) => {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      console.error("Error changing password:", error.response.data);
+      console.error("Error changing password");
 
       setNotificationMessage(error.response.data.message); // Use the actual error message
       setNotificationSeverity("error");
