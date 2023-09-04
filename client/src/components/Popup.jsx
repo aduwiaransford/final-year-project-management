@@ -110,6 +110,11 @@ const UserProfilePopup = ({ username, onLogout }) => {
       console.log(res.data);
       handleCloseChangePassword();
 
+      //success notification
+      setNotificationMessage(res.data.message);
+      setNotificationSeverity("success");
+      setNotificationOpen(true);
+
       // Clear the input fields
       setCurrentPassword("");
       setNewPassword("");

@@ -14,15 +14,8 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const { isFetching, dispatch } = useContext(AuthContext);
 
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
-  const handleCloseAlert = () => {
-    setShowSuccessAlert(false);
-    setShowErrorAlert(false);
-  };
 
   const { user } = useContext(AuthContext);
 
@@ -56,8 +49,7 @@ export default function SignIn() {
         navigate("/supervisor-dashboard");
       }
     } catch (error) {
-      setShowErrorAlert(true);
-      console.error("Login failed", error);
+      console.error("Login failed!!!", error);
     }
   };
 
@@ -124,13 +116,6 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          {/* Error Alert */}
-          <NotificationAlert
-            open={showErrorAlert}
-            message="Authentication Failed!"
-            severity="error"
-            onClose={handleCloseAlert}
-          />
         </Box>
       </Box>
     </Container>

@@ -15,7 +15,7 @@ const login = asyncHandler(async (req, res) => {
     const match = await bcrypt.compare(password, foundUser.password);
 
 
-    if (!match) {
+    if (!match || !foundUser) {
         return res.status(401).json({ message: 'Wrong email or password' });
     }
 
