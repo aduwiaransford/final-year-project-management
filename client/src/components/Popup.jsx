@@ -18,7 +18,7 @@ import NotificationAlert from "./NotificationAlert";
 
 const UserProfilePopup = ({ username, onLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false); // State for the change password dialog
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -58,6 +58,33 @@ const UserProfilePopup = ({ username, onLogout }) => {
   const open = Boolean(anchorEl);
 
   const handleChangePassword = async () => {
+    // Reset previous error messages
+    setNotificationMessage("");
+    setNotificationSeverity("success");
+    setNotificationOpen(false);
+
+    // Form validations
+    if (!currentPassword.trim()) {
+      setNotificationMessage("Current password is required");
+      setNotificationSeverity("error");
+      setNotificationOpen(true);
+      return;
+    }
+
+    if (!newPassword.trim()) {
+      setNotificationMessage("New password is required");
+      setNotificationSeverity("error");
+      setNotificationOpen(true);
+      return;
+    }
+
+    if (!confirmPassword.trim()) {
+      setNotificationMessage("Confirm password is required");
+      setNotificationSeverity("error");
+      setNotificationOpen(true);
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
       setNotificationMessage("New password and confirm password do not match");
       setNotificationSeverity("error");
@@ -67,7 +94,7 @@ const UserProfilePopup = ({ username, onLogout }) => {
 
     try {
       const res = await axios.post(
-        "/users/changepassword",
+        "https://aamusted-api.onrender.com/users/changepassword",
         {
           userId: user.data.id,
           currentPassword,
@@ -80,17 +107,15 @@ const UserProfilePopup = ({ username, onLogout }) => {
         }
       );
 
-      setNotificationMessage("Password changed successfully");
-      setNotificationSeverity("success");
-      setNotificationOpen(true);
+      console.log(res.data);
+      handleCloseChangePassword();
 
       // Clear the input fields
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-
-      handleCloseChangePassword();
     } catch (error) {
+      console.error("Error changing password:", error.response.data);
       setNotificationMessage(error.response.data.message);
       setNotificationSeverity("error");
       setNotificationOpen(true);
